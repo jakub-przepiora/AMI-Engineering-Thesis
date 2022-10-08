@@ -24,4 +24,12 @@ class SecurityController extends AbstractController
             'error' => $error
         ]);
     }
+    /**
+     * @Route("/logout", name="app_logout")
+     */
+    public function logout(AuthenticationUtils $authenticationUtils): Response
+    {
+        $error = $authenticationUtils->getLastAuthenticationError();
+        return $this->render('security/logout.html.twig');
+    }
 }

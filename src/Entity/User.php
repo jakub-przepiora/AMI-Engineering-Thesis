@@ -30,7 +30,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private $roles = ["ROLE_USER"];
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $tableProject = [];
 
     /**
      * @var string The hashed password
@@ -88,6 +93,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
+    }
+
+    public function getTableProject(): array
+    {
+        $table = $this->tableProject;
+        // guarantee every user at least has ROLE_USER
+        $table[] = 'My table';
+
+        return $table;
     }
 
     public function setRoles(array $roles): self
