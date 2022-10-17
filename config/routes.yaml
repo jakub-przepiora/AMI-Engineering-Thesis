@@ -1,3 +1,9 @@
 index:
     path: /
     controller: App\Controller\HomeController::index
+app_task_tables:
+    path: /task/tables
+    controller: App\Controller\TaskTablesController::index
+app_task_tables_create:
+    path: /task/tables/create
+    controller: App\Controller\TaskTablesController::create
