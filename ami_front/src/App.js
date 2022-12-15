@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 // own import
 import MainHeader from './components/MainHeader';
 import ContentMainPage from './components/ContentMainPage';
+import MyTablesView from './components/MyTables';
 
 // own import
 
@@ -44,10 +45,10 @@ function GetStart() {
     );
 }
 
-function SubData2() {
+function MyTables() {
     return (
         <div className='data'>
-            <h1>s2Data Page</h1>
+            <MyTablesView/>
         </div>
     );
 }
@@ -62,7 +63,7 @@ function App() {
                     <Route exact path='/' element={<Home/>} />
                     <Route  path='/about-app' element={<AboutApp/>} />
                     <Route path='/get-start' element={<GetStart/>} />
-                    <Route path='/data/subdata2' element={<SubData2/>} />
+                    <Route path='/my-tables' element={<MyTables/>} />
                 </Routes>
             </Router>
             {/*<ContentMainPage/>*/}

@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@mui/material/Menu";
 import Link from '@mui/material/Link';
-import Button from "@mui/material/Button";
+
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 
@@ -44,10 +44,10 @@ export default function MainHeader(){
         setAnchorElNav(null);
     };
 
-  function GoPage(){
-
-        console.log("test");
-    }
+  // function GoPage(){
+  //
+  //       console.log("test");
+  //   }
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
