@@ -4,12 +4,12 @@ import TasksContainer from "./TasksContainer";
 import Nav from "./Nav";
 import socketIO from "socket.io-client";
 
-const socket = socketIO.connect("http://localhost:4000");
+const socket = "";
 
 const Task = () => {
 	return (
 		<div>
-			<Nav />
+			{/*<Nav />*/}
 			<AddTask socket={socket} />
 			<TasksContainer socket={socket} />
 		</div>

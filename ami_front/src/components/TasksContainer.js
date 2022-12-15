@@ -7,7 +7,7 @@ const TasksContainer = ({ socket }) => {
 
 	useEffect(() => {
 		function fetchTasks() {
-			fetch("http://127.0.0.1:8000/api")
+			fetch("http://127.0.0.1:8000/tasks/getallexample")
 				.then((res) => res.json())
 				.then((data) => setTasks(data));
 		}
