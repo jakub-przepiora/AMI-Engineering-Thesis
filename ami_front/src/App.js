@@ -8,6 +8,7 @@ import ContentMainPage from './components/ContentMainPage';
 import MyTablesView from './components/MyTables';
 import LoginForm from './pages/LoginForm';
 import RegisterForm from './pages/RegisterForm';
+import Table from './pages/Table';
 
 // own import
 
@@ -55,13 +56,6 @@ function MyTables() {
     );
 }
 
-function Table() {
-    return (
-        <div className='data'>
-            <MyTablesView/>
-        </div>
-    );
-}
 
 
 
@@ -76,7 +70,8 @@ function App() {
                     <Route exact path='/' element={<Home/>} />
                     <Route  path='/about-app' element={<AboutApp/>} />
                     <Route path='/get-start' element={<GetStart/>} />
-                    <Route path='/my-tables' element={<MyTables/>} />
+                    <Route path='/my-tables' element={<MyTablesView/>} />
+                    <Route path='/table' element={<Table/>} />
                     <Route path='/login' element={<LoginForm/>} />
                     <Route path='/register' element={<RegisterForm/>} />
 
