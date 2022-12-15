@@ -40,3 +40,17 @@
 .main-content {
   margin: 150px 0;
 }
+
+.main-content.login-page {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+.button-center {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

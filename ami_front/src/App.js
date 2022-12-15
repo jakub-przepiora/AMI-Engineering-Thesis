@@ -6,6 +6,8 @@ import { styled } from '@mui/material/styles';
 import MainHeader from './components/MainHeader';
 import ContentMainPage from './components/ContentMainPage';
 import MyTablesView from './components/MyTables';
+import LoginForm from './pages/LoginForm';
+import RegisterForm from './pages/RegisterForm';
 
 // own import
 
@@ -53,6 +55,17 @@ function MyTables() {
     );
 }
 
+function Table() {
+    return (
+        <div className='data'>
+            <MyTablesView/>
+        </div>
+    );
+}
+
+
+
+
 function App() {
     return(
         <div>
@@ -64,6 +77,9 @@ function App() {
                     <Route  path='/about-app' element={<AboutApp/>} />
                     <Route path='/get-start' element={<GetStart/>} />
                     <Route path='/my-tables' element={<MyTables/>} />
+                    <Route path='/login' element={<LoginForm/>} />
+                    <Route path='/register' element={<RegisterForm/>} />
+
                 </Routes>
             </Router>
             {/*<ContentMainPage/>*/}

@@ -15,7 +15,7 @@ import Link from '@mui/material/Link';
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 
-const pagesObj = [
+const pagesBasic = [
         {
             name:"About App",
             url:"/about-app"
@@ -25,6 +25,27 @@ const pagesObj = [
             url: "/get-start"
         }
 ];
+const pagesLoged = [
+    {
+        name:"My Tables",
+        url:"/my-tables"
+    },
+    {
+        name: "Table",
+        url: "/table"
+    }
+];
+const pagesSettings = [
+    {
+        name:"Log in",
+        url:"/login"
+    },
+    {
+        name: "Register",
+        url: "/register"
+    }
+];
+
 
 const pages = ['About app', 'Get start'];
 const settings = ['Profile', 'Settings', 'Tables', 'Logout'];
@@ -132,7 +153,7 @@ export default function MainHeader(){
                         LOGO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pagesObj.map((page) => (
+                        {pagesLoged.map((page) => (
                             <Link
                                 href={page.url}
                                 onClick={handleCloseNavMenu}
@@ -165,10 +186,16 @@ export default function MainHeader(){
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
+                            {pagesSettings.map((setting) => (
+                                <Link
+                                    href={setting.url}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ m: 2, color: 'black', display: 'block' }}
+                                >
+                                    <Typography textAlign="center">{setting.name}</Typography>
+                                </Link>
+
+
                             ))}
                         </Menu>
                     </Box>
