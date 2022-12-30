@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20221008141349 extends AbstractMigration
+final class Version20221230181057 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,14 @@ final class Version20221008141349 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE tasks (id INT AUTO_INCREMENT NOT NULL, id_creator INT NOT NULL, create_data DATETIME NOT NULL, modification_data DATETIME DEFAULT NULL, assign_user_id INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE user ADD token_jwt VARCHAR(180) NOT NULL, DROP token_verification');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649543F70AC ON user (token_jwt)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE tasks');
+        $this->addSql('DROP INDEX UNIQ_8D93D649543F70AC ON `user`');
+        $this->addSql('ALTER TABLE `user` ADD token_verification VARCHAR(255) NOT NULL, DROP token_jwt');
     }
 }

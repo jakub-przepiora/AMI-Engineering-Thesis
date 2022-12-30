@@ -28,6 +28,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $tokenJWT = "";
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = ["ROLE_USER"];
@@ -61,6 +66,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getTokenJWT(): ?string
+    {
+        return $this->tokenJWT;
+    }
+
+    public function setTokenJWT(string $TokenJWT): self
+    {
+        $this->tokenJWT = $TokenJWT;
 
         return $this;
     }

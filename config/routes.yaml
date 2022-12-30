@@ -7,3 +7,12 @@ app_task_tables:
 app_task_tables_create:
     path: /task/tables/create
     controller: App\Controller\TaskTablesController::create
+
+table_new:
+    path: /api
+    methods: [POST]
+    controller: App\Controller\ApiController::new
+user_registration:
+    path: /register
+    methods: [POST]
+    controller: App\Controller\RegistrationController::register
