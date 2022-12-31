@@ -11,19 +11,23 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: apiToken
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
 
+            json_login:
+                check_path: app_api_login
+                username_path: email
+                password_path: password
             lazy: true
             provider: app_user_provider
-            guard:
-                authenticator: App\Security\LoginFormAuthenticator
-            logout:
-                path: app_logout
+#            guard:
+#                authenticator: App\Security\LoginFormAuthenticator
+#            logout:
+#                path: app_logout
 
 
                 # where to redirect after logout
