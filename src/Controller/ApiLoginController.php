@@ -81,11 +81,16 @@ class ApiLoginController extends AbstractController
 
         $user = $repository->find($id);
         $response = ['status'=>'false'];
+
         if ($user) {
-            $token= $user->getTokenJWT();
-            $response = ['status'=>$token];
+            $token = $user->getTokenJWT();
+            if($token === $data["token"]){
+                $response = ['status'=>true];
+            }
+            else
+                $response = ['status'=>false];
         } else {
-            $response = ['status'=>'false'];
+            $response = ['status'=>false];
         }
 //        var_dump($data);
         return $this->json($response);
