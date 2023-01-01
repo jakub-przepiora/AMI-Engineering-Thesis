@@ -30,8 +30,7 @@ class ApiController extends AbstractController
                 'description' => $tab->getDescription(),
             ];
         }
-//        var_dump($data);
-        $data = ["kekw"=>1];
+
         return $this->json($data);
     }
 
