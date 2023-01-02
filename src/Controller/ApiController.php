@@ -116,39 +116,7 @@ class ApiController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/api/table/{id}/task/add", name="table_task_add", methods={"POST"})
-     */
-    public function taskAdd(int $id, UserRepository $repository, Request $request): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
 
-        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
-
-            return $this->json(["status"=>"You don't have permission"]);
-        }
-
-        $new_task = new Tasks();
-        $new_task->setIdCreator($data['user_id']);
-        $new_task->setIdTable($id);
-        $date = new DateTime();
-
-        $new_task->setCreateData($date->setTimestamp(time()));
-        $new_task->setTaskName($data['title']);
-        $new_task->setTaskDesc($data['description']);
-        $new_task->setIdColumn($data['column_id']);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($new_task);
-        $entityManager->flush();
-
-
-
-        return $this->json([
-            'status'=> "added",
-            'id'=> $new_task->getId()
-        ]);
-    }
 
 
 
@@ -218,7 +186,91 @@ class ApiController extends AbstractController
         return $this->json('Deleted a project successfully with id ' . $id);
     }
 
-    function checkCredentials($user_id, $user_token, UserRepository $repository) {
+    /**
+     *
+     *      TASKS METHOD
+     *
+     */
+
+
+
+
+
+    /**
+     * @Route("/api/table/{id}/task/add", name="table_task_add", methods={"POST"})
+     */
+    public function taskAdd(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+
+        $new_task = new Tasks();
+        $new_task->setIdCreator($data['user_id']);
+        $new_task->setIdTable($id);
+        $date = new DateTime();
+
+        $new_task->setCreateData($date->setTimestamp(time()));
+        $new_task->setTaskName($data['title']);
+        $new_task->setTaskDesc($data['description']);
+        $new_task->setIdColumn($data['column_id']);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($new_task);
+        $entityManager->flush();
+
+
+
+        return $this->json([
+            'status'=> "added",
+            'id'=> $new_task->getId()
+        ]);
+    }
+
+    /**
+     * @Route("/api/table/{id}/task/", name="table_tasks_get_all", methods={"POST"})
+     */
+    public function tasksGetAll(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+
+
+        $tasksFromDB = $this->getDoctrine()
+            ->getRepository(Tasks::class)
+            ->findBy(["id_table"=>$id]);
+
+        $tasks = [];
+//        @TODO this do
+        foreach ($tasksFromDB as $tab) {
+            $tasks[] = [
+                'id' => $tab->getId(),
+                'creator' => $tab->getIdCreator(),
+                'create_data' => $tab->getCreateData(),
+                'task_title' => $tab->getTaskName()
+            ];
+        }
+
+
+        return $this->json($tasks);
+
+    }
+
+    /**
+     *
+     *      Public METHODS
+     *
+     */
+
+
+    public function checkCredentials($user_id, $user_token, UserRepository $repository) {
         $user = $repository->find($user_id);
 
 
