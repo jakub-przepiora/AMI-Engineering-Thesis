@@ -32,14 +32,52 @@ function sendLoginRequest(email, password) {
         .then(data => {
             Cookies.set('current_id', data["user"], { expires: 1 });
             Cookies.set('current_token', data["token"], { expires: 1 });
-           
+            checkToken();
         })
 
 
+        .catch(error => {
+            console.log('error', error);
+            return false;
+        });
+
+
+
+}
+
+function checkToken(){
+    const token = Cookies.get('current_token');
+    const userId = Cookies.get('current_id');
+    var myHeaders = new Headers();
+
+    myHeaders.append("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+
+    myHeaders.append("Content-Type", "application/json");
+
+
+    var raw = JSON.stringify({
+        "id": userId,
+        "token": token
+    });
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch("http://127.0.0.1:8000/api/checkjwt", requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            if(data["status"] == true){
+                window.location = "http://localhost:3000/my-tables";
+            }
+            else{
+                console.log(data["status"])
+            }
+        })
         .catch(error => console.log('error', error));
-
-
-
 }
 
 export default function BasicTextFields() {
@@ -58,8 +96,9 @@ export default function BasicTextFields() {
     // Handle form submission
     const handleSubmit = (event) => {
         event.preventDefault();
+        sendLoginRequest(email,password)
 
-        sendLoginRequest(email,password);
+
     };
     return (
         <Container maxWidth="xl" className="main-content login-page">

@@ -20,7 +20,7 @@ final class Version20221230181057 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user ADD token_jwt VARCHAR(180) NOT NULL, DROP token_verification');
+        $this->addSql('ALTER TABLE user ADD token_jwt VARCHAR(255) NOT NULL, DROP token_verification');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649543F70AC ON user (token_jwt)');
     }
 
