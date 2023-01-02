@@ -41,9 +41,11 @@ class ApiLoginController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $entityManager->persist($user);
-        $entityManager->flush();
+        $entityManager->flush(); // add to db
+
+
         return $this->json([
-            'user'  => $user->getUserIdentifier(),
+            'user'  => $user->getId(),
             'token' => $jwt,
         ]);
     }
@@ -92,7 +94,7 @@ class ApiLoginController extends AbstractController
         } else {
             $response = ['status'=>false];
         }
-//        var_dump($data);
+
         return $this->json($response);
     }
 }
