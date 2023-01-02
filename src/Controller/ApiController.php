@@ -15,25 +15,32 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/api/tables", name="table_index", methods={"GET"})
+     * @Route("/api/tables", name="table_index", methods={"POST"})
      */
-    public function index(): JsonResponse
+    public function index(UserRepository $repository, Request $request): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
         $tabs = $this->getDoctrine()
             ->getRepository(TaskTables::class)
             ->findAll();
 
-        $data = [];
+        $tables = [];
 
         foreach ($tabs as $tab) {
-            $data[] = [
+            $tables[] = [
                 'id' => $tab->getId(),
                 'tab_name' => $tab->getTabName(),
                 'description' => $tab->getDescription(),
+                'tab_owner' => $tab->getIdOwner()
             ];
         }
 
-        return $this->json($data);
+        return $this->json($tables);
     }
 
     /**
