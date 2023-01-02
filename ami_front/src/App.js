@@ -48,13 +48,7 @@ function GetStart() {
     );
 }
 
-function MyTables() {
-    return (
-        <div className='data'>
-            <MyTablesView/>
-        </div>
-    );
-}
+
 
 
 
