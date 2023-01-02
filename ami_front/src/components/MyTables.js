@@ -12,15 +12,19 @@ import Container from "@mui/material/Container";
 import Cookies from "js-cookie";
 import Err404 from "../pages/Error404";
 import TableIcon from "../components/TableIcon";
+import Link from "@mui/material/Link";
 
 class MyTablesView extends React.Component {
 
     state = {
-        hasPermission: false
+        hasPermission: false,
+        tables: []
     }
 
     componentDidMount() {
         this.checkPermission();
+        this.getOwnerTables();
+
     }
 
     checkPermission = async () => {
@@ -40,7 +44,24 @@ class MyTablesView extends React.Component {
         const data = await response.json();
         this.setState({ hasPermission: data.status });
     }
+    getOwnerTables = async () => {
+        const token = Cookies.get('current_token');
+        const userId = Cookies.get('current_id');
 
+        const response = await fetch('http://127.0.0.1:8000/api/tables', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_id: userId,
+                token: token
+            })
+        });
+        const data = await response.json();
+        this.setState({ tables: data });
+
+    }
 
 
 
@@ -52,13 +73,22 @@ class MyTablesView extends React.Component {
         if (!this.state.hasPermission) {
             return (<Err404 />);
         }
+
         return (
 
             <Container maxWidth="xl" className="main-content">
-
+                <h3>My tables</h3>
                 <Grid container spacing={2}>
 
-                    <TableIcon title={"test"} desc={"desc"} />
+                    {this.state.tables.map((tab) => (
+                        <TableIcon
+                            title={tab.tab_name}
+                            id={tab.id}
+                            desc={tab.description}
+                        />
+
+                    ))}
+
 
 
                     <Grid item xs={3}>
@@ -75,7 +105,7 @@ class MyTablesView extends React.Component {
                     </Grid>
 
                 </Grid>
-
+                <h3>Teammates tables</h3>
             </Container>
         );
 
