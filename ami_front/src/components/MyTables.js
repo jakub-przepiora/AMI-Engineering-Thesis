@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Container from "@mui/material/Container";
 import Cookies from "js-cookie";
-
+import Err404 from "../pages/Error404";
 
 class MyTablesView extends React.Component {
 
@@ -41,62 +41,16 @@ class MyTablesView extends React.Component {
     }
 
 
-    // checkToken = () => {
-    //     const token = Cookies.get('current_token');
-    //     const userId = Cookies.get('current_id');
-    //     var myHeaders = new Headers();
-    //
-    //     myHeaders.append("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
-    //
-    //     myHeaders.append("Content-Type", "application/json");
-    //
-    //
-    //     var raw = JSON.stringify({
-    //         "id": userId,
-    //         "token": token
-    //     });
-    //
-    //     var requestOptions = {
-    //         method: 'POST',
-    //         headers: myHeaders,
-    //         body: raw,
-    //         redirect: 'follow'
-    //     };
-    //
-    //     fetch("http://127.0.0.1:8000/api/checkjwt", requestOptions)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (data["status"] == false) {
-    //                 window.location = "http://localhost:3000/login";
-    //             }else {
-    //                 this.userPermission = true;
-    //
-    //                 return true;
-    //             }
-    //
-    //         })
-    //         .catch(error => {
-    //             return false;
-    //         });
-    //
-    //     return this.userPermission;
-    // };
 
-    constructor(props) {
-        super(props);
-        this.userPermission = false;
-        // this.checkToken();
-    }
+
+
 
     render() {
-        // console.log(this.checkToken());
-        // console.log(this.userPermission);
 
 
         if (!this.state.hasPermission) {
-            return (<h3>permission denied</h3>);
+            return (<Err404 />);
         }
-
         return (
 
             <Container maxWidth="xl" className="main-content">
