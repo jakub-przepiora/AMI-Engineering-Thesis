@@ -8,10 +8,8 @@ app_task_tables_create:
     path: /task/tables/create
     controller: App\Controller\TaskTablesController::create
 
-table_new:
-    path: /api/add
-    methods: [POST]
-    controller: App\Controller\ApiController::new
+
+
 user_registration:
     path: /register
     methods: [POST]
@@ -20,3 +18,18 @@ app_api_login:
     path: /api/login
     methods: [ POST ]
     controller: App\Controller\ApiLoginController::index
+
+#Tables action
+
+table_new:
+    path: /api/add
+    methods: [POST]
+    controller: App\Controller\ApiController::new
+table_team_index:
+    path: /api/teamtables
+    methods: [POST]
+    controller: App\Controller\ApiController::teamTables
+table_index:
+    path: /api/tables
+    methods: [ POST ]
+    controller: App\Controller\ApiController::index

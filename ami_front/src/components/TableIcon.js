@@ -42,7 +42,7 @@ class TableIcon extends React.Component {
                     <CardMedia
                         component="img"
                         height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
+                        image={`${process.env.PUBLIC_URL}/vintage-table.jpg`}
                         alt="green iguana"
                     />
                     <CardContent>

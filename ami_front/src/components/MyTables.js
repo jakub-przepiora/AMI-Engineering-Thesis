@@ -93,9 +93,9 @@ class MyTablesView extends React.Component {
 
                     <Grid item xs={3}>
                         <Card sx={{maxWidth: 345}}>
-                            <div style={{ height: '205px'}}></div>
+                            <div style={{ height: '185px'}}></div>
                             <CardContent>
-                                <Typography gutterBottom variant="h3" component="div">
+                                <Typography gutterBottom variant="h4" component="div">
                                     Add new table
                                 </Typography>
 
@@ -106,6 +106,21 @@ class MyTablesView extends React.Component {
 
                 </Grid>
                 <h3>Teammates tables</h3>
+                <Grid container spacing={2}>
+
+                    {this.state.tables.map((tab) => (
+                        <TableIcon
+                            title={tab.tab_name}
+                            id={tab.id}
+                            desc={tab.description}
+                        />
+
+                    ))}
+
+
+
+
+                </Grid>
             </Container>
         );
 

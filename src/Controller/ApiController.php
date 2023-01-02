@@ -42,6 +42,34 @@ class ApiController extends AbstractController
 
         return $this->json($tables);
     }
+    /**
+     * @Route("/api/teamtables", name="table_team_index", methods={"POST"})
+     */
+    public function teamTables(UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+        $tabs = $this->getDoctrine()
+            ->getRepository(TaskTables::class)
+            ->findAll();
+
+        $tables = [];
+
+        foreach ($tabs as $tab) {
+            $tables[] = [
+                'id' => $tab->getId(),
+                'tab_name' => $tab->getTabName(),
+                'description' => $tab->getDescription(),
+                'tab_owner' => $tab->getIdOwner()
+            ];
+        }
+
+        return $this->json($tables);
+    }
 
     /**
      * @Route("/api/add", name="table_new", methods={"POST"})
