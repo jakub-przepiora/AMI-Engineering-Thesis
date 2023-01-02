@@ -207,7 +207,18 @@ class MyTablesView extends React.Component {
                             </CardActions>
                         </Card>
                     </Grid>
+                    <Grid item xs={3}>
+                        <Card sx={{maxWidth: 345}}>
+                            <div style={{ height: '205px'}}></div>
+                            <CardContent>
+                                <Typography gutterBottom variant="h3" component="div">
+                                    Add new table
+                                </Typography>
 
+                            </CardContent>
+
+                        </Card>
+                    </Grid>
 
                 </Grid>
 

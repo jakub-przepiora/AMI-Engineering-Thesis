@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\TaskTables;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,9 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/api", name="table_index", methods={"GET"})
+     * @Route("/api/tables", name="table_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(): JsonResponse
     {
         $tabs = $this->getDoctrine()
             ->getRepository(TaskTables::class)
@@ -35,24 +37,32 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api", name="table_new", methods={"POST"})
+     * @Route("/api/add", name="table_new", methods={"POST"})
      */
-    public function new(Request $request): Response
+    public function new(UserRepository $repository, Request $request): JsonResponse
     {
-
+        $data = json_decode($request->getContent(), true);
         $entityManager = $this->getDoctrine()->getManager();
 
+
+        if(!$this->checkCredentials($data['owner'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
         $taskTables = new TaskTables();
 
-        $taskTables->setTabName($request->request->get('name'));
-        $taskTables->setDescription($request->request->get('description'));
-        $taskTables->setIdOwner($request->request->get('owner'));
-        $taskTables->setTabMode($request->request->get('tabmode'));
+        $taskTables->setTabName($data['name']);
+        $taskTables->setDescription($data['description']);
+        $taskTables->setIdOwner($data['owner']);
+        $taskTables->setTabMode($data['tabmode']);
 
         $entityManager->persist($taskTables);
         $entityManager->flush();
 
-        return $this->json('Created new table successfully with id ' . $taskTables -> getId());
+        return $this->json([
+            "status"=>'Created new table successfully with id ' . $taskTables -> getId(),
+            "id_table"=> $taskTables -> getId()
+        ]);
     }
 
     /**
@@ -119,5 +129,20 @@ class ApiController extends AbstractController
         $entityManager->flush();
 
         return $this->json('Deleted a project successfully with id ' . $id);
+    }
+    function checkCredentials($user_id, $user_token, UserRepository $repository) {
+        $user = $repository->find($user_id);
+
+
+        if ($user) {
+            $token = $user->getTokenJWT();
+            if($token === $user_token){
+                return true;
+            }
+            else
+                return false;
+        } else {
+            return false;
+        }
     }
 }
