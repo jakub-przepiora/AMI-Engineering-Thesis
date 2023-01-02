@@ -18,12 +18,14 @@ class MyTablesView extends React.Component {
 
     state = {
         hasPermission: false,
-        tables: []
+        tables: [],
+        teamTables: []
     }
 
     componentDidMount() {
         this.checkPermission();
         this.getOwnerTables();
+        this.getTeamTables();
 
     }
 
@@ -63,6 +65,24 @@ class MyTablesView extends React.Component {
 
     }
 
+    getTeamTables = async () => {
+        const token = Cookies.get('current_token');
+        const userId = Cookies.get('current_id');
+
+        const response = await fetch('http://127.0.0.1:8000/api/teamtables', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_id: userId,
+                token: token
+            })
+        });
+        const data = await response.json();
+        this.setState({ teamTables: data });
+
+    }
 
 
 
@@ -108,7 +128,7 @@ class MyTablesView extends React.Component {
                 <h3>Teammates tables</h3>
                 <Grid container spacing={2}>
 
-                    {this.state.tables.map((tab) => (
+                    {this.state.teamTables.map((tab) => (
                         <TableIcon
                             title={tab.tab_name}
                             id={tab.id}
