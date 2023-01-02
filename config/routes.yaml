@@ -22,7 +22,7 @@ app_api_login:
 #Tables action
 
 table_new:
-    path: /api/add
+    path: /api/table/add
     methods: [POST]
     controller: App\Controller\ApiController::new
 table_team_index:
@@ -33,3 +33,9 @@ table_index:
     path: /api/tables
     methods: [ POST ]
     controller: App\Controller\ApiController::index
+
+#Tasks
+table_task_add:
+    path: /api/table/{id}/task/add
+    methods: [ POST ]
+    controller: App\Controller\ApiController::taskAdd

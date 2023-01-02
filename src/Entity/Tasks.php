@@ -23,6 +23,26 @@ class Tasks
     private $id_creator;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $id_column;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $id_table;
+
+    /**
+     * @ORM\Column(type="string", length=120)
+     */
+    private $task_name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $task_desc;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $create_data;
@@ -50,6 +70,54 @@ class Tasks
     public function setIdCreator(int $id_creator): self
     {
         $this->id_creator = $id_creator;
+
+        return $this;
+    }
+
+    public function getIdColumn(): ?int
+    {
+        return $this->id_column;
+    }
+
+    public function setIdColumn(int $id_column): self
+    {
+        $this->id_column = $id_column;
+
+        return $this;
+    }
+
+    public function getIdTable(): ?int
+    {
+        return $this->id_table;
+    }
+
+    public function setIdTable(int $id_table): self
+    {
+        $this->id_table = $id_table;
+
+        return $this;
+    }
+
+    public function getTaskName(): ?string
+    {
+        return $this->task_name;
+    }
+
+    public function setTaskName(string $task_name): self
+    {
+        $this->task_name = $task_name;
+
+        return $this;
+    }
+
+    public function getTaskDesc(): ?string
+    {
+        return $this->task_desc;
+    }
+
+    public function setTaskDesc(string $task_desc): self
+    {
+        $this->task_desc = $task_desc;
 
         return $this;
     }

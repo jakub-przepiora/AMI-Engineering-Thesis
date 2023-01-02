@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Tasks;
 use App\Entity\TaskTables;
 use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,7 +88,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/add", name="table_new", methods={"POST"})
+     * @Route("/api/table/add", name="table_new", methods={"POST"})
      */
     public function new(UserRepository $repository, Request $request): JsonResponse
     {
@@ -113,6 +115,42 @@ class ApiController extends AbstractController
             "id_table"=> $taskTables -> getId()
         ]);
     }
+
+    /**
+     * @Route("/api/table/{id}/task/add", name="table_task_add", methods={"POST"})
+     */
+    public function taskAdd(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+
+        $new_task = new Tasks();
+        $new_task->setIdCreator($data['user_id']);
+        $new_task->setIdTable($id);
+        $date = new DateTime();
+
+        $new_task->setCreateData($date->setTimestamp(time()));
+        $new_task->setTaskName($data['title']);
+        $new_task->setTaskDesc($data['description']);
+        $new_task->setIdColumn($data['column_id']);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($new_task);
+        $entityManager->flush();
+
+
+
+        return $this->json([
+            'status'=> "added",
+            'id'=> $new_task->getId()
+        ]);
+    }
+
+
 
     /**
      * @Route("/table/{id}", name="table_show", methods={"GET"})
@@ -179,6 +217,7 @@ class ApiController extends AbstractController
 
         return $this->json('Deleted a project successfully with id ' . $id);
     }
+
     function checkCredentials($user_id, $user_token, UserRepository $repository) {
         $user = $repository->find($user_id);
 
