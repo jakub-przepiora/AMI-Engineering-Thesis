@@ -27,7 +27,7 @@ class ApiController extends AbstractController
         }
         $tabs = $this->getDoctrine()
             ->getRepository(TaskTables::class)
-            ->findAll();
+            ->findBy(["id_owner"=>$data['user_id']]);
 
         $tables = [];
 
@@ -49,24 +49,38 @@ class ApiController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+
+
         if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
 
             return $this->json(["status"=>"You don't have permission"]);
         }
-        $tabs = $this->getDoctrine()
-            ->getRepository(TaskTables::class)
-            ->findAll();
 
         $tables = [];
+        $user = $repository->find($data["user_id"]);
+        $tables_ids = $user->getTableProject();
 
-        foreach ($tabs as $tab) {
-            $tables[] = [
-                'id' => $tab->getId(),
-                'tab_name' => $tab->getTabName(),
-                'description' => $tab->getDescription(),
-                'tab_owner' => $tab->getIdOwner()
-            ];
+        if(count($tables_ids) <= 0) {
+            return $this->json(["status"=>"You don't have teammate tables"]);
         }
+
+        foreach ($tables_ids as $table_id){
+            $tabs = $this->getDoctrine()
+                ->getRepository(TaskTables::class)
+                ->findBy(["id"=>$table_id]);
+
+
+
+            foreach ($tabs as $tab) {
+                $tables[] = [
+                    'id' => $tab->getId(),
+                    'tab_name' => $tab->getTabName(),
+                    'description' => $tab->getDescription(),
+                    'tab_owner' => $tab->getIdOwner()
+                ];
+            }
+        }
+
 
         return $this->json($tables);
     }
