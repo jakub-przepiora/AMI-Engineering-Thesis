@@ -298,7 +298,38 @@ class ApiController extends AbstractController
 
         ]);
     }
+    /**
+     * @Route("/api/table/{id}/columns", name="table_columns_get_all", methods={"POST"})
+     */
+    public function columnGetAll(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
 
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+
+
+        $columnsById = $this->getDoctrine()
+            ->getRepository(Tasks::class)
+            ->findBy(["id_table"=>$id]);
+
+        $columns = [];
+
+        foreach ($columnsById as $column) {
+            $columns[] = [
+                'id' => $column->getId(),
+                'idtable' => $column->getIdTable(),
+                'columnname' => $column->getColumnName(),
+
+            ];
+        }
+
+
+        return $this->json($columns);
+
+    }
     /**
      *
      *      Public METHODS
