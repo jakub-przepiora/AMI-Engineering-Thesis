@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\ColumnRepository;
+use App\Repository\ColumnFromTableRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 
 
 /**
- * @ORM\Entity(repositoryClass=ColumnRepository::class)
+ * @ORM\Entity(repositoryClass=ColumnFromTableRepository::class)
  */
-class Column
+class ColumnFromTable
 {
     /**
      * @ORM\Id

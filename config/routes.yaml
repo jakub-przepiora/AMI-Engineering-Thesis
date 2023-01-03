@@ -44,3 +44,9 @@ table_tasks_get_all:
     path: /api/table/{id}/tasks
     methods: [ POST ]
     controller: App\Controller\ApiController::tasksGetAll
+
+#Columns
+column_new:
+    path: /api/table/{id}/column/add
+    methods: [ POST ]
+    controller: App\Controller\ApiController::addColumn

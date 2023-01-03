@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+
+use App\Entity\ColumnFromTable;
 use App\Entity\Tasks;
 use App\Entity\TaskTables;
 use App\Repository\UserRepository;
@@ -262,6 +264,39 @@ class ApiController extends AbstractController
 
         return $this->json($tasks);
 
+    }
+    /**
+     *
+     *      Columns METHODS
+     *
+     */
+
+    /**
+     * @Route("/api/table/{id}/column/add", name="column_new", methods={"POST"})
+     */
+    public function addColumn(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+            return $this->json(["status" => "You don't have permission"]);
+        }
+
+        $columnNew = new ColumnFromTable();
+
+        $columnNew->setColumnName($data["colname"]);
+        $columnNew->setIdTable($id);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($columnNew);
+        $entityManager->flush();
+
+        return $this->json([
+            "status"=>'Created column successfully with id',
+
+        ]);
     }
 
     /**
