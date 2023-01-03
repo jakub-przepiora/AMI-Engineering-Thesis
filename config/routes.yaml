@@ -39,3 +39,8 @@ table_task_add:
     path: /api/table/{id}/task/add
     methods: [ POST ]
     controller: App\Controller\ApiController::taskAdd
+
+table_tasks_get_all:
+    path: /api/table/{id}/tasks
+    methods: [ POST ]
+    controller: App\Controller\ApiController::tasksGetAll

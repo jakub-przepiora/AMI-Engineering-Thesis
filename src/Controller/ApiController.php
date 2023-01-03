@@ -231,7 +231,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/table/{id}/task/", name="table_tasks_get_all", methods={"POST"})
+     * @Route("/api/table/{id}/tasks", name="table_tasks_get_all", methods={"POST"})
      */
     public function tasksGetAll(int $id, UserRepository $repository, Request $request): JsonResponse
     {
@@ -248,13 +248,14 @@ class ApiController extends AbstractController
             ->findBy(["id_table"=>$id]);
 
         $tasks = [];
-//        @TODO this do
+
         foreach ($tasksFromDB as $tab) {
             $tasks[] = [
                 'id' => $tab->getId(),
                 'creator' => $tab->getIdCreator(),
                 'create_data' => $tab->getCreateData(),
-                'task_title' => $tab->getTaskName()
+                'task_title' => $tab->getTaskName(),
+                'Description' => $tab->getTaskDesc()
             ];
         }
 
