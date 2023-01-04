@@ -146,10 +146,16 @@ class ApiController extends AbstractController
      */
     public function showTab(int $id, UserRepository $repository, Request $request): JsonResponse
     {
+        
+        $data = json_decode($request->getContent(), true);
+        if(!$this->checkCredentials($data['owner'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+
         $table = $this->getDoctrine()
             ->getRepository(TaskTables::class)
             ->find($id);
-
         if (!$table) {
 
             return $this->json('No project found for id' . $id, 404);
