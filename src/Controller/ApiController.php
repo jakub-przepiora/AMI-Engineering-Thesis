@@ -119,30 +119,59 @@ class ApiController extends AbstractController
     }
 
 
+    private function getTasksToCol(int $id_column){
 
+        $tasksFromDB = $this->getDoctrine()
+            ->getRepository(Tasks::class)
+            ->findBy(["id_column"=>$id_column]);
+
+        $tasks = [];
+
+        foreach ($tasksFromDB as $tab) {
+            $tasks[] = [
+                'id' => $tab->getId(),
+                'title' => $tab->getTaskName(),
+                'creator' => $tab->getIdCreator(),
+                'create_data' => $tab->getCreateData(),
+                'description' => $tab->getTaskDesc(),
+                "comments" =>[],
+            ];
+        }
+        return $tasks;
+    }
 
 
     /**
-     * @Route("/table/{id}", name="table_show", methods={"GET"})
+     * @Route("/api/table/{id}", name="table_show", methods={"POST"})
      */
-    public function show(int $id): Response
+    public function showTab(int $id, UserRepository $repository, Request $request): JsonResponse
     {
-        $project = $this->getDoctrine()
-            ->getRepository(Project::class)
+        $table = $this->getDoctrine()
+            ->getRepository(TaskTables::class)
             ->find($id);
 
-        if (!$project) {
+        if (!$table) {
 
             return $this->json('No project found for id' . $id, 404);
         }
 
-        $data =  [
-            'id' => $project->getId(),
-            'name' => $project->getName(),
-            'description' => $project->getDescription(),
-        ];
+        $columnsById = $this->getDoctrine()
+            ->getRepository(ColumnFromTable::class)
+            ->findBy(["id_table"=>$id]);
 
-        return $this->json($data);
+        $columns = [];
+
+        foreach ($columnsById as $column) {
+            $columns[] = [
+                'id' => $column->getId(),
+                'title' => $column->getColumnName(),
+                'items'=> $this->getTasksToCol($column->getId())
+            ];
+        }
+
+
+
+        return $this->json($columns);
     }
 
     /**

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-const AddTask = ({ socket }) => {
+const AddTask = () => {
 	const [task, setTask] = useState("");
 
 	const handleAddTodo = (e) => {
 		e.preventDefault();
-		socket.emit("createTask", { task });
+		// socket.emit("createTask", { task });
 		setTask("");
 	};
 	return (

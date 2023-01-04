@@ -1,15 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Cookies from "js-cookie";
 
 const TasksContainer = ({ socket }) => {
 	const [tasks, setTasks] = useState({});
 
 	useEffect(() => {
 		function fetchTasks() {
-			fetch("http://127.0.0.1:8000/tasks/getallexample")
+			const token = Cookies.get('current_token');
+			const userId = Cookies.get('current_id');
+			var myHeaders = new Headers();
+			myHeaders.append("Content-Type", "application/json");
+			var raw = JSON.stringify({
+				"user_id": userId,
+				"token": token
+			});
+
+			var requestOptions = {
+				method: 'POST',
+				headers: myHeaders,
+				body: raw,
+				redirect: 'follow'
+			};
+			fetch("http://127.0.0.1:8000/api/table/6",requestOptions)
 				.then((res) => res.json())
-				.then((data) => setTasks(data));
+				.then((data) => {
+					console.log(data);
+					setTasks(data)
+				});
 		}
 		fetchTasks();
 	}, []);
@@ -38,11 +57,11 @@ const TasksContainer = ({ socket }) => {
 			<DragDropContext onDragEnd={handleDragEnd}>
 				{Object.entries(tasks).map((task) => (
 					<div
-						className={`${task[1].title.toLowerCase()}__wrapper`}
+						className={`${task[1].title.replace(/ /g, "_").toLowerCase()}__wrapper wrapper`}
 						key={task[1].title}
 					>
 						<h3>{task[1].title} Tasks</h3>
-						<div className={`${task[1].title.toLowerCase()}__container`}>
+						<div className={`${task[1].title.replace(/ /g, "_").toLowerCase()}__container wrapper-container`}>
 							<Droppable droppableId={task[1].title}>
 								{(provided) => (
 									<div ref={provided.innerRef} {...provided.droppableProps}>
@@ -57,7 +76,7 @@ const TasksContainer = ({ socket }) => {
 														ref={provided.innerRef}
 														{...provided.draggableProps}
 														{...provided.dragHandleProps}
-														className={`${task[1].title.toLowerCase()}__items`}
+														className={`${task[1].title.replace(/ /g, "_").toLowerCase()}__items items`}
 													>
 														<p>{item.title}</p>
 														<p className='comment'>

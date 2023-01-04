@@ -64,18 +64,16 @@
   padding: 10px;
 }
 
-.completed__wrapper,
-.ongoing__wrapper,
-.pending__wrapper {
+.wrapper
+ {
   width: 32%;
   min-height: 60vh;
   display: flex;
   flex-direction: column;
   padding: 5px;
 }
-.ongoing__wrapper > h3,
-.pending__wrapper > h3,
-.completed__wrapper > h3 {
+
+.wrapper > h3 {
   text-align: center;
   text-transform: capitalize;
 }
@@ -87,11 +85,13 @@
 }
 .completed__items {
   background-color: #7fb77e;
+
+}
+.items {
+  background-color: #66baef;
 }
 
-.pending__container,
-.ongoing__container,
-.completed__container {
+.wrapper-container {
   width: 100%;
   min-height: 55vh;
   display: flex;

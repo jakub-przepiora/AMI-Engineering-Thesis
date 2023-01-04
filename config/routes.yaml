@@ -34,6 +34,12 @@ table_index:
     methods: [ POST ]
     controller: App\Controller\ApiController::index
 
+table_show:
+    path: /api/table/{id}
+    methods: [ POST ]
+    controller: App\Controller\ApiController::showTab
+
+
 #Tasks
 table_task_add:
     path: /api/table/{id}/task/add
@@ -50,3 +56,8 @@ column_new:
     path: /api/table/{id}/column/add
     methods: [ POST ]
     controller: App\Controller\ApiController::addColumn
+
+table_columns_get_all:
+    path: /api/table/{id}/columns
+    methods: [ POST ]
+    controller: App\Controller\ApiController::columnGetAll

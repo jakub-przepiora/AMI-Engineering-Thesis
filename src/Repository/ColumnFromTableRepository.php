@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Column;
+use App\Entity\ColumnFromTable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Column>
+ * @extends ServiceEntityRepository<ColumnFromTable>
  *
- * @method Column|null find($id, $lockMode = null, $lockVersion = null)
- * @method Column|null findOneBy(array $criteria, array $orderBy = null)
- * @method Column[]    findAll()
- * @method Column[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ColumnFromTable|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ColumnFromTable|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ColumnFromTable[]    findAll()
+ * @method ColumnFromTable[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ColumnFromTableRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Column::class);
+        parent::__construct($registry, ColumnFromTable::class);
     }
 
-    public function save(Column $entity, bool $flush = false): void
+    public function save(ColumnFromTable $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class ColumnFromTableRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Column $entity, bool $flush = false): void
+    public function remove(ColumnFromTable $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class ColumnFromTableRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Column[] Returns an array of Column objects
+//     * @return ColumnFromTable[] Returns an array of ColumnFromTable objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class ColumnFromTableRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Column
+//    public function findOneBySomeField($value): ?ColumnFromTable
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')
