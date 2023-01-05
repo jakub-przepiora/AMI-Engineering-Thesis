@@ -146,9 +146,9 @@ class ApiController extends AbstractController
      */
     public function showTab(int $id, UserRepository $repository, Request $request): JsonResponse
     {
-        
+
         $data = json_decode($request->getContent(), true);
-        if(!$this->checkCredentials($data['owner'], $data['token'], $repository)) {
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
 
             return $this->json(["status"=>"You don't have permission"]);
         }
