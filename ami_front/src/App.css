@@ -166,3 +166,14 @@
 .task-title {
   margin-top:0;
 }
+
+.userControl {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.userControl div {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}

@@ -49,6 +49,10 @@ table_add_user:
     methods: [ POST ]
     controller: App\Controller\ApiController::addUserToTab
 
+table_team:
+    path: /api/table/{id}/team
+    methods: [ POST ]
+    controller: App\Controller\ApiController::getTeammatesTable
 #Tasks
 
 table_task_add:

@@ -326,6 +326,30 @@ class ApiController extends AbstractController
 
 
     }
+    /**
+     * @Route("/api/table/{id}/team", name="table_team", methods={"POST"})
+     */
+    public function getTeammatesTable(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        // check credentials
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+
+
+
+        $query = $this->getDoctrine()->getManager()
+            ->createQuery(
+                'SELECT e.id, e.email FROM App\Entity\User e WHERE e.tableProject LIKE :value'
+            )->setParameter('value', '%'.$id.'%');
+
+        $users = $query->getResult();
+
+        return $this->json($users);
+    }
 
     /**
      *

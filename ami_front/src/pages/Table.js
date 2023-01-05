@@ -8,6 +8,8 @@ import {Stack} from "@mui/material";
 import Container from "@mui/material/Container";
 import AddUser from "../components/AddUser";
 
+import ListUser from "../components/ListUser";
+
 
 const Task = () => {
 
@@ -21,6 +23,8 @@ const Task = () => {
                 <AddTask  socket={ws}/>
                 <AddColumn  socket={ws}  />
                 <AddUser  socket={ws}  />
+                <ListUser socket={ws}/>
+
             </Stack>
 
             <TasksContainer   socket={ws} />
