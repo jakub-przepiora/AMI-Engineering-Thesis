@@ -39,6 +39,11 @@ table_show:
     methods: [ POST ]
     controller: App\Controller\ApiController::showTab
 
+table_update:
+    path: /api/table/{id}/update
+    methods: [ POST ]
+    controller: App\Controller\ApiController::updateTab
+
 
 #Tasks
 table_task_add:

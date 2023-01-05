@@ -75,6 +75,37 @@ function App(props) {
 
 	useEffect(() => {
 		//WEB SOCKETS
+		const updateTask = (data) => {
+			const token = Cookies.get('current_token');
+			const userId = Cookies.get('current_id');
+			var myHeaders = new Headers();
+			myHeaders.append("Content-Type", "application/json");
+			var raw = JSON.stringify({
+				"user_id": userId,
+				"token": token,
+				"cols": data
+			});
+
+			var requestOptions = {
+				method: 'POST',
+				headers: myHeaders,
+				body: raw,
+				redirect: 'follow'
+			};
+			const searchParams = new URLSearchParams(window.location.search);
+			fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id')+"/update", requestOptions)
+				.then((res) => res.json())
+				.then((data) => {
+					console.log("dasdasd");
+					var getTab = JSON.stringify(data).slice(1,-1);
+					// getTab;
+					console.log(getTab);
+					// console.log(getTab);
+					console.log(JSON.stringify(columns));
+					setColumns(JSON.parse(getTab.replaceAll("'",'"')));
+					// setColumns(columns);
+				});
+		}
 
 		const fetchTasks = () => {
 			const token = Cookies.get('current_token');
@@ -98,12 +129,9 @@ function App(props) {
 				.then((data) => {
 					console.log("dasdasd");
 					var getTab = JSON.stringify(data).slice(1,-1);
-					// getTab;
-					console.log(getTab);
-					// console.log(getTab);
-					console.log(JSON.stringify(columns));
+
 					setColumns(JSON.parse(getTab.replaceAll("'",'"')));
-					// setColumns(columns);
+
 				});
 		}
 
@@ -122,7 +150,10 @@ function App(props) {
 			if(sCol != sData){
 
 				setColumns(data);
+				updateTask(data);
+				wss.ontest("tests");
 			}
+
 
 
 		};
@@ -136,6 +167,7 @@ function App(props) {
 		};
 		wss.ontest = () => {
 			console.log('WebSocket test');
+
 		};
 
 		setWs(wss);

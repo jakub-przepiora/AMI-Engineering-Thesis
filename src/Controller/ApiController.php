@@ -148,7 +148,7 @@ class ApiController extends AbstractController
         $tasks = "";
 
         foreach ($tasksFromDB as $tab) {
-            $tasks .= "{'id':'".$tab->getId()."','content':'".$tab->getTaskDesc()."'},";
+            $tasks .= "{'id':'".$tab->getId()."','content':'".$tab->getTaskDesc()."','title':'".$tab->getTaskName()."'},";
 //                'id' => $tab->getId(),
 //                'title' => $tab->getTaskName(),
 //                'creator' => $tab->getIdCreator(),
@@ -251,6 +251,49 @@ class ApiController extends AbstractController
         return $this->json('Deleted a project successfully with id ' . $id);
     }
 
+    private function updatePositionTask($id_task, $id_destination_col){
+//        var_dump($id_task, $id_destination_col);
+        $entityManager = $this->getDoctrine()->getManager();
+        $task = $entityManager->getRepository(Tasks::class)->find($id_task);
+        $task->setIdColumn($id_destination_col);
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+        return true;
+    }
+
+    /**
+     * @Route("/table/{id}/update", name="table_update", methods={"POST"})
+     */
+    public function updateTab(UserRepository $repository, Request $request, int $id): JsonResponse
+    {
+
+        $data = json_decode($request->getContent(), true);
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+        // start array col
+        foreach ($data["cols"] as $key => $col ){
+            $id_desti = intval($col["id"]);
+            foreach ($col["items"] as $task) {
+                    $this->updatePositionTask($task["id"],$id_desti);
+            }
+        }
+//
+//
+//        $entityManager = $this->getDoctrine()->getManager();
+//        $project = $entityManager->getRepository(Project::class)->find($id);
+//
+//        if (!$project) {
+//            return $this->json('No project found for id' . $id, 404);
+//        }
+//
+//        $entityManager->remove($project);
+//        $entityManager->flush();
+
+        return $this->json('Deleted a project successfully with id ' . $id);
+    }
     /**
      *
      *      TASKS METHOD
