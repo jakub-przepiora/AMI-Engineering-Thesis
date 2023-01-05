@@ -37,7 +37,6 @@ const AddTask = ({ socket }, props) => {
 	const handleAddTodo = (e) => {
 		e.preventDefault();
 		//socket.emit("createTask", { task });
-		console.log("test");
 		const token = Cookies.get('current_token');
 		const userId = Cookies.get('current_id');
 		var myHeaders = new Headers();

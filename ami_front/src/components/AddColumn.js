@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
 import TextField from '@mui/material/TextField';
+import Cookies from "js-cookie";
 
 const style = {
 	position: 'absolute',
@@ -21,7 +22,7 @@ const style = {
 
 const AddColumn = ({ socket }) => {
 	const [columnTitle, setColumnTitle] = useState("");
-	const [columnDesc, setColumnDesc] = useState("");
+
 	const [open, setOpen] = useState(false);
 
 	const handleOpen = () => {
@@ -32,9 +33,39 @@ const AddColumn = ({ socket }) => {
 		setOpen(false);
 	};
 
-	const handleAddTodo = (e) => {
+	const handleAddColumn = (e) => {
 		e.preventDefault();
-		//socket.emit("createTask", { column });
+
+		const token = Cookies.get('current_token');
+		const userId = Cookies.get('current_id');
+		var myHeaders = new Headers();
+
+
+		myHeaders.append("Content-Type", "application/json");
+
+
+		var raw = JSON.stringify({
+			"user_id": userId,
+			"token": token,
+			"colname": columnTitle,
+
+		});
+
+		var requestOptions = {
+			method: 'POST',
+			headers: myHeaders,
+			body: raw,
+			redirect: 'follow'
+		};
+		const searchParams = new URLSearchParams(window.location.search);
+		fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id')+"/column/add", requestOptions)
+			.then(response => response.json())
+			.then(data => {
+				alert("Added column ");
+				window.location.reload();
+			})
+			.catch(error => console.log('error', error));
+
 		setColumnTitle("");
 	};
 	return (
@@ -57,7 +88,7 @@ const AddColumn = ({ socket }) => {
 					<div>
 						<h2 id="simple-modal-title">Modal Add column</h2>
 
-						<form className='form__input' onSubmit={handleAddTodo}>
+						<form className='form__input' onSubmit={handleAddColumn}>
 							<Box
 								sx={{
 									width: 300,
@@ -67,9 +98,9 @@ const AddColumn = ({ socket }) => {
 							>
 								<TextField className='input' id="column_title" onChange={(e) => setColumnTitle(e.target.value)} label="Title" value={columnTitle}  variant="outlined" required/>
 
-								<TextField className='input' id="column_desc" name='column_desc' onChange={(e) => setColumnDesc(e.target.value)}  label="Short Description" value={columnDesc}  variant="outlined" required/>
 
-								<Button className='addTodoBtn' variant="contained">Add Task</Button>
+
+								<Button className='addTodoBtn' variant="contained" type='submit'>Add Column</Button>
 
 							</Box>
 						</form>
