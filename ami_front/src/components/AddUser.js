@@ -47,7 +47,7 @@ const AddUser = ({ socket }) => {
 		var raw = JSON.stringify({
 			"user_id": userId,
 			"token": token,
-			"colname": columnTitle,
+			"user_email": userEmail,
 
 		});
 
@@ -58,11 +58,12 @@ const AddUser = ({ socket }) => {
 			redirect: 'follow'
 		};
 		const searchParams = new URLSearchParams(window.location.search);
-		fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id')+"/column/add", requestOptions)
+		fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id')+"/user/add", requestOptions)
 			.then(response => response.json())
 			.then(data => {
-				alert("Added column ");
-				window.location.reload();
+				// const response = JSON.parse(data);
+				// console.log(data);
+				alert(data.state);
 			})
 			.catch(error => console.log('error', error));
 
@@ -96,7 +97,7 @@ const AddUser = ({ socket }) => {
 
 								}}
 							>
-								<TextField className='input' id="column_title" onChange={(e) => setUserEmail(e.target.value)} label="Title" value={userEmail}  variant="outlined" required/>
+								<TextField className='input' id="email_user" onChange={(e) => setUserEmail(e.target.value)} label="User E-mail" value={userEmail} type='email'  variant="outlined" required/>
 
 
 

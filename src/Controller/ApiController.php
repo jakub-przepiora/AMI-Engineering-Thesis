@@ -309,7 +309,7 @@ class ApiController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         $user = $entityManager->getRepository(User::class)->findBy(["email"=>$data["user_email"]]);
-
+        if(!$user) return $this->json(["state"=>"User doesn't exist"]);
         $fromDbTableProject = $user[0]->getTableProject();
 
 
@@ -324,7 +324,7 @@ class ApiController extends AbstractController
             return $this->json(["state"=>"User can't be added"]);
         }
 
-        
+
     }
 
     /**
