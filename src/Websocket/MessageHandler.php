@@ -48,28 +48,7 @@ class MessageHandler implements MessageComponentInterface
     }
     public function onTest(ConnectionInterface $from, $msg)
     {
-//        foreach($this->connections as $connection)
-//        {
-//            if($connection === $from)
-//            {
-//                continue;
-//            }
-//
-//            $connection->send($msg);
-//        }
 
-        $ch = curl_init();
-        // set url
-        curl_setopt($ch, CURLOPT_URL, "https://asdjasidjasiodjioasjdoasdjoa90130912u31289u3128.requestcatcher.com/test?".$msg);
-
-        //return the transfer as a string
-
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        // $output contains the output string
-        $output = curl_exec($ch);
-        // close curl resource to free up system resources
-        curl_close($ch);
     }
 
     public function onClose(ConnectionInterface $conn)

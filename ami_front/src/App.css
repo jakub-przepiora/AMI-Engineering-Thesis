@@ -163,3 +163,6 @@
 .form__input .addTodoBtn {
   margin: 10px;
 }
+.task-title {
+  margin-top:0;
+}

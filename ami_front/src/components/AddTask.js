@@ -20,7 +20,7 @@ const style = {
 	pb: 3,
 };
 
-const AddTask = ({ socket }) => {
+const AddTask = ({ socket }, props) => {
 	const [taskTitle, setTaskTitle] = useState("");
 	const [taskDesc, setTaskDesc] = useState("");
 	const [open, setOpen] = useState(false);
@@ -37,7 +37,7 @@ const AddTask = ({ socket }) => {
 	const handleAddTodo = (e) => {
 		e.preventDefault();
 		//socket.emit("createTask", { task });
-
+		console.log("test");
 		const token = Cookies.get('current_token');
 		const userId = Cookies.get('current_id');
 		var myHeaders = new Headers();
@@ -47,7 +47,7 @@ const AddTask = ({ socket }) => {
 
 
 		var raw = JSON.stringify({
-			"id": userId,
+			"user_id": userId,
 			"token": token,
 			"title": taskTitle,
 			"description": taskDesc,
@@ -64,7 +64,8 @@ const AddTask = ({ socket }) => {
 		fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id')+"/task/add", requestOptions)
 			.then(response => response.json())
 			.then(data => {
-				alert("Added task")
+				alert("Added task");
+				window.location.reload();
 			})
 			.catch(error => console.log('error', error));
 		setTaskTitle("");
@@ -119,7 +120,7 @@ const AddTask = ({ socket }) => {
 								{/*/>*/}
 								<TextField className='input' id="task_desc" name='task_desc' onChange={(e) => setTaskDesc(e.target.value)}  label="Short Description" value={taskDesc}  variant="outlined" required/>
 
-								<Button className='addTodoBtn' variant="contained">Add Task</Button>
+								<Button className='addTodoBtn' variant="contained" type='submit'>Add Task</Button>
 
 							</Box>
 						</form>

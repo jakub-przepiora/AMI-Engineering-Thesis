@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 
 
-function App({ socket }) {
+function App({ socket }, props) {
 	const [wss, setWs, getWs] = useState(null);
 	const [message, setMessage] = useState('');
 	const [messages, setMessages] = useState([]);
@@ -136,7 +136,15 @@ function App({ socket }) {
 		}
 
 	}, [columnsCurr]);
+	useEffect(() => {
 
+		if(wss !== null){
+
+			wss.send(JSON.stringify(columns));
+
+		}
+
+	}, [props.TaskTitle]);
 // =====WEB SOCKETS
 
 	const onDragEnd = (result, columns, setColumns, ws, columnsCurr, setColumnsCurr) => {
@@ -264,6 +272,7 @@ function App({ socket }) {
 																				...provided.draggableProps.style
 																			}}
 																		>
+																			<p className='task-title'><b>{item.title}</b></p>
 																			{item.content}
 																		</div>
 																	);
