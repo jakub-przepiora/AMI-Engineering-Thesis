@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\ColumnFromTable;
 use App\Entity\Tasks;
 use App\Entity\TaskTables;
+use App\Entity\User;
 use App\Repository\UserRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -252,7 +253,7 @@ class ApiController extends AbstractController
     }
 
     private function updatePositionTask($id_task, $id_destination_col){
-//        var_dump($id_task, $id_destination_col);
+
         $entityManager = $this->getDoctrine()->getManager();
         $task = $entityManager->getRepository(Tasks::class)->find($id_task);
         $task->setIdColumn($id_destination_col);
@@ -293,26 +294,44 @@ class ApiController extends AbstractController
     {
 
         $data = json_decode($request->getContent(), true);
+
+        // check credentials
         if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
 
             return $this->json(["status"=>"You don't have permission"]);
         }
 
+        // check owner
         if(!$this->checkOwnerTable($id, $data['user_id'], $data['token'], $repository)) {
 
             return $this->json(["status"=>"You aren't owner this table"]);
         }
 
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->findBy(["email"=>$data["user_email"]]);
 
-        return $this->json('User has been added');
+        $fromDbTableProject = $user[0]->getTableProject();
+
+
+        if(!in_array($id,$fromDbTableProject)){
+            $fromDbTableProject[] = $id;
+            $user[0]->setTableProject($fromDbTableProject);
+            $entityManager->persist($user[0]);
+            $entityManager->flush();
+            return $this->json(["state"=>'User has been added']);
+        }
+        else {
+            return $this->json(["state"=>"User can't be added"]);
+        }
+
+        
     }
+
     /**
      *
      *      TASKS METHOD
      *
      */
-
-
 
 
 
@@ -459,12 +478,13 @@ class ApiController extends AbstractController
             ->getRepository(TaskTables::class)
             ->findBy(["id_owner"=>$user_id]);
         if ($tabs) {
-            $idOwnTable= $tabs->getId();
-            if($idOwnTable === $currentTabId){
-                return true;
+            foreach ($tabs as $tab){
+                $idOwnTable = $tab->getId();
+                if($idOwnTable === $currentTabId){
+                    return true;
+                }
             }
-            else
-                return false;
+            return false;
         } else {
             return false;
         }

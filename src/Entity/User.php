@@ -116,9 +116,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $table = $this->tableProject;
         // guarantee every user at least has ROLE_USER
-        $table[] = 'My table';
+//        $table[] = 'My table';
 
         return $table;
+    }
+    public function setTableProject(array $tableProject): self
+    {
+        $this->tableProject = $tableProject;
+
+        return $this;
     }
 
     public function setRoles(array $roles): self
