@@ -1,17 +1,28 @@
 import React from "react";
 import AddTask from "../components/AddTask";
 import TasksContainer from "../components/TasksContainer";
-import socketIO from "socket.io-client";
 
-const socket = socketIO.connect("http://127.0.0.1:8000");
+import AddColumn from "../components/AddColumn";
+import {Stack} from "@mui/material";
+
+import Container from "@mui/material/Container";
+
 
 const Task = () => {
-    return (
-        <div>
 
-            <AddTask socket={socket} />
-            <TasksContainer socket={socket} />
-        </div>
+    const ws = new WebSocket('ws://localhost:3001');
+    return (
+        <Container maxWidth="xl">
+            <Stack
+                direction="row"
+
+                spacing={2}>
+                <AddTask  socket={ws}/>
+                <AddColumn  socket={ws}  />
+            </Stack>
+
+            <TasksContainer   socket={ws} />
+        </Container>
     );
 };
 

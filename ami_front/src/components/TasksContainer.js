@@ -5,42 +5,8 @@ import { DragDropContext, Draggable, Droppable, useDrop } from "react-beautiful-
 import Cookies from "js-cookie";
 
 
-// const ws = new WebSocket('ws://localhost:3001');
 
-// const tasks = [
-// 	{ id: "1", content: "First task" },
-// 	{ id: "2", content: "Second task" },
-// 	{ id: "3", content: "Third task" },
-// 	{ id: "4", content: "Fourth task" },
-// 	{ id: "5", content: "Fifth task" }
-// ];
-//
-// const taskStatus = {
-// 	requested: {
-// 		name: "Requested",
-// 		items: tasks
-// 	},
-// 	toDo: {
-// 		name: "To do",
-// 		items: []
-// 	},
-// 	inProgress: {
-// 		name: "In Progress",
-// 		items: []
-// 	},
-// 	done: {
-// 		name: "Done",
-// 		items: []
-// 	}
-// };
-
-
-
-
-
-
-
-function App(props) {
+function App({ socket }) {
 	const [wss, setWs, getWs] = useState(null);
 	const [message, setMessage] = useState('');
 	const [messages, setMessages] = useState([]);
@@ -120,7 +86,7 @@ function App(props) {
 		}
 
 		fetchTasks();
-		const wss = new WebSocket('ws://localhost:3001');
+		const wss =  socket ;
 
 		wss.onopen = () => {
 			console.log('WebSocket connection established');

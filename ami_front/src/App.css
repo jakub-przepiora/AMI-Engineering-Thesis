@@ -153,3 +153,13 @@
   justify-content: center;
   flex-direction: column;
 }
+
+.controlBtn {
+  margin: 10px
+}
+.form__input .input {
+  margin: 10px;
+}
+.form__input .addTodoBtn {
+  margin: 10px;
+}
