@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable, useDrop } from "react-beautiful-dnd";
 
 import Cookies from "js-cookie";
 
 
-const ws = new WebSocket('ws://localhost:3001');
+// const ws = new WebSocket('ws://localhost:3001');
 
 // const tasks = [
 // 	{ id: "1", content: "First task" },
@@ -71,6 +71,7 @@ function App(props) {
 		}
 	});
 	const [columns, setColumns] = useState(taskStatus);
+	const [columnsCurr, setColumnsCurr] = useState(columns);
 
 	useEffect(() => {
 		//WEB SOCKETS
@@ -109,9 +110,13 @@ function App(props) {
 		wss.onmessage = (event) => { // recipient
 			const data = JSON.parse(event.data);
 
-			console.log(data);
+			const sCol = JSON.stringify(columns);
+			const sData = JSON.stringify(data);
+			if(sCol != sData){
 
-			setColumns(data);
+				setColumns(data);
+			}
+
 
 		};
 
@@ -130,33 +135,22 @@ function App(props) {
 
 
 	}, []);
-	//
-	function sendMessage2(columnss) {
-		console.log("test");
-		ws.send(JSON.stringify(columnss));
-	}
-	// const sendMessage2 = () => {  // SENDER
-	//
-	// 	// console.log(mess);
-	// 	// console.log(ws);
-	// 	console.log("test");
-	// 	ws.send(JSON.stringify(columns));
-	//
-	//
-	// };
 
-	// useEffect(() => {
-	//
-	// 	console.log(columns,"test");
-	// 	console.log("test");
-	// 	// const wss = new WebSocket('ws://localhost:3001');
-	// 	// ws.send(JSON.stringify(columns));
-	//
-	// }, [columns]);
+
+
+	useEffect(() => {
+
+		if(wss !== null){
+
+			wss.send(JSON.stringify(columns));
+
+		}
+
+	}, [columnsCurr]);
 
 // =====WEB SOCKETS
 
-	const onDragEnd = (result, columns, setColumns, ws) => {
+	const onDragEnd = (result, columns, setColumns, ws, columnsCurr, setColumnsCurr) => {
 		if (!result.destination) return;
 		const { source, destination } = result;
 
@@ -178,7 +172,19 @@ function App(props) {
 					items: destItems
 				}
 			});
-			sendMessage2(columns);
+			setColumnsCurr({
+				...columns,
+				[source.droppableId]: {
+					...sourceColumn,
+					items: sourceItems
+				},
+				[destination.droppableId]: {
+					...destColumn,
+					items: destItems
+				}
+			});
+
+
 		} else {
 			const column = columns[source.droppableId];
 			const copiedItems = [...column.items];
@@ -191,7 +197,14 @@ function App(props) {
 					items: copiedItems
 				}
 			});
-			sendMessage2(columns);
+			setColumnsCurr({
+				...columns,
+				[source.droppableId]: {
+					...column,
+					items: copiedItems
+				}
+			});
+
 		}
 
 
@@ -204,7 +217,7 @@ function App(props) {
 				style={{ display: "flex", justifyContent: "center", height: "100%" }}
 			>
 				<DragDropContext
-					onDragEnd={(result) => onDragEnd(result, columns, setColumns, ws)} >
+					onDragEnd={(result) => onDragEnd(result, columns, setColumns, wss, columnsCurr, setColumnsCurr)}>
 					{/*{Object.entries(columns).map(([columnId, column], index) => {*/}
 					{Object.entries(columns).map(([columnId, column], index) => {
 						return (
