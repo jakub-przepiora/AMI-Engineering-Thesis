@@ -350,7 +350,51 @@ class ApiController extends AbstractController
 
         return $this->json($users);
     }
+    /**
+     * @Route("/api/table/{id}/user/remove", name="table_remove_user", methods={"POST"})
+     */
+    public function removeUserToTab(UserRepository $repository, Request $request, int $id): JsonResponse
+    {
 
+        $data = json_decode($request->getContent(), true);
+
+        // check credentials
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+
+        // check owner
+        if(!$this->checkOwnerTable($id, $data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You aren't owner this table"]);
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->find($data["id_del"]);
+
+        if(!$user) return $this->json(["state"=>"I can't find user in DB"]);
+        $fromDbTableProject = $user->getTableProject();
+
+
+        if(in_array($id, $fromDbTableProject)){
+
+            $key = array_search($id, $fromDbTableProject);
+
+            if ($key !== false) {
+                unset($fromDbTableProject[$key]);
+            }
+            $user->setTableProject($fromDbTableProject);
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this->json(["state"=>'User has been removed']);
+        }
+        else {
+            return $this->json(["state"=>"User doesn't exist in team"]);
+        }
+
+
+    }
     /**
      *
      *      TASKS METHOD

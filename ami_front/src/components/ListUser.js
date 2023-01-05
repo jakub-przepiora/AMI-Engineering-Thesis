@@ -35,17 +35,12 @@ const style = {
 
 const ListUser = ({ socket }) => {
 	const [users, setUsers] = useState([]);
+	const [selectedUser, setSelectedUser] = useState("");
 
 	const [open, setOpen] = useState(false);
 
 	const handleOpen = () => {
 		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
-	useEffect(() => {
 		const token = Cookies.get('current_token');
 		const userId = Cookies.get('current_id');
 
@@ -72,9 +67,47 @@ const ListUser = ({ socket }) => {
 				setUsers(result);
 			})
 			.catch(error => console.log('error', error));
-	},[]);
+	};
 
-	const deleteClick = () => {
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+
+	const deleteClick = (id) => {
+		const token = Cookies.get('current_token');
+		const userId = Cookies.get('current_id');
+		var myHeaders = new Headers();
+
+
+		myHeaders.append("Content-Type", "application/json");
+
+
+		var raw = JSON.stringify({
+			"user_id": userId,
+			"token": token,
+			"id_del": id
+
+		});
+
+		var requestOptions = {
+			method: 'POST',
+			headers: myHeaders,
+			body: raw,
+			redirect: 'follow'
+		};
+		const searchParams = new URLSearchParams(window.location.search);
+		fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id')+"/user/remove", requestOptions)
+			.then(response => response.json())
+			.then(data => {
+
+				alert(data.state);
+				handleClose();
+			})
+			.catch(error => console.log('error', error));
+
+
+
 
 	};
 	// const handleListUser = (e) => {
@@ -140,7 +173,11 @@ const ListUser = ({ socket }) => {
 									</div>
 									<div>
 										<Tooltip title="Delete">
-											<IconButton onClick={deleteClick}>
+											{/*<IconButton onClick={setSelectedUser(user.id)} >*/}
+											<IconButton onClick={(e) => {
+												// setSelectedUser(user.id);
+												deleteClick(user.id);
+											}} >
 												<DeleteIcon />
 											</IconButton>
 										</Tooltip>

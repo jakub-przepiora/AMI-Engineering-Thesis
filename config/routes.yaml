@@ -53,6 +53,11 @@ table_team:
     path: /api/table/{id}/team
     methods: [ POST ]
     controller: App\Controller\ApiController::getTeammatesTable
+
+table_remove_user:
+    path: /api/table/{id}/user/remove
+    methods: [ POST ]
+    controller: App\Controller\ApiController::removeUserToTab
 #Tasks
 
 table_task_add:
