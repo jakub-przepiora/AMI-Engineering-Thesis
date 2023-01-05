@@ -45,36 +45,14 @@ function App(props) {
 	const [message, setMessage] = useState('');
 	const [messages, setMessages] = useState([]);
 
-	const [tasks, setTasks] = useState([
-		{ id: "1", content: "First task" },
-		{ id: "2", content: "Second task" },
-		{ id: "3", content: "Third task" },
-		{ id: "4", content: "Fourth task" },
-		{ id: "5", content: "Fifth task" }
-	]);
-	const [taskStatus, setTaskStatus] = useState({
-		requested: {
-			name: "Requested",
-			items: tasks
-		},
-		toDo: {
-			name: "To do",
-			items: []
-		},
-		inProgress: {
-			name: "In Progress",
-			items: []
-		},
-		done: {
-			name: "Done",
-			items: []
-		}
-	});
+	const [tasks, setTasks] = useState([]);
+	const [taskStatus, setTaskStatus] = useState({});
 	const [columns, setColumns] = useState(taskStatus);
 	const [columnsCurr, setColumnsCurr] = useState(columns);
-
+	const [emptyTable, setEmptyTable] =useState('');
 	useEffect(() => {
 		//WEB SOCKETS
+
 		const updateTask = (data) => {
 			const token = Cookies.get('current_token');
 			const userId = Cookies.get('current_id');
@@ -96,14 +74,13 @@ function App(props) {
 			fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id')+"/update", requestOptions)
 				.then((res) => res.json())
 				.then((data) => {
-					console.log("dasdasd");
+
 					var getTab = JSON.stringify(data).slice(1,-1);
-					// getTab;
-					console.log(getTab);
-					// console.log(getTab);
-					console.log(JSON.stringify(columns));
-					setColumns(JSON.parse(getTab.replaceAll("'",'"')));
-					// setColumns(columns);
+
+					var inToJson = JSON.parse(getTab.replaceAll("'",'"'));
+
+					setColumns(inToJson);
+
 				});
 		}
 
@@ -128,10 +105,17 @@ function App(props) {
 				.then((res) => res.json())
 				.then((data) => {
 					console.log("dasdasd");
-					var getTab = JSON.stringify(data).slice(1,-1);
+					console.log(data);
+					if(data == '{}') {
+						setEmptyTable("Empty table");
+						alert("P");
+					}
+					else {
 
-					setColumns(JSON.parse(getTab.replaceAll("'",'"')));
+						var getTab = JSON.stringify(data).slice(1, -1);
 
+						setColumns(JSON.parse(getTab.replaceAll("'", '"')));
+					}
 				});
 		}
 

@@ -2,7 +2,7 @@ import React from "react";
 import AddTask from "./AddTask";
 import TasksContainer from "./TasksContainer";
 import Nav from "./Nav";
-import socketIO from "socket.io-client";
+// import socketIO from "socket.io-client";
 
 const socket = "ws://localhost:3001";
 
