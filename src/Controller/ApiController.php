@@ -280,19 +280,31 @@ class ApiController extends AbstractController
                     $this->updatePositionTask($task["id"],$id_desti);
             }
         }
-//
-//
-//        $entityManager = $this->getDoctrine()->getManager();
-//        $project = $entityManager->getRepository(Project::class)->find($id);
-//
-//        if (!$project) {
-//            return $this->json('No project found for id' . $id, 404);
-//        }
-//
-//        $entityManager->remove($project);
-//        $entityManager->flush();
+
 
         return $this->json('Deleted a project successfully with id ' . $id);
+    }
+
+
+    /**
+     * @Route("/api/table/{id}/user/add", name="table_add_user", methods={"POST"})
+     */
+    public function addUserToTab(UserRepository $repository, Request $request, int $id): JsonResponse
+    {
+
+        $data = json_decode($request->getContent(), true);
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+
+        if(!$this->checkOwnerTable($id, $data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You aren't owner this table"]);
+        }
+
+
+        return $this->json('User has been added');
     }
     /**
      *
@@ -442,8 +454,24 @@ class ApiController extends AbstractController
      *
      */
 
+    public function checkOwnerTable($currentTabId, $user_id, $user_token, UserRepository $repository) {
+        $tabs = $this->getDoctrine()
+            ->getRepository(TaskTables::class)
+            ->findBy(["id_owner"=>$user_id]);
+        if ($tabs) {
+            $idOwnTable= $tabs->getId();
+            if($idOwnTable === $currentTabId){
+                return true;
+            }
+            else
+                return false;
+        } else {
+            return false;
+        }
+    }
 
-    public function checkCredentials($user_id, $user_token, UserRepository $repository) {
+
+    public function checkCredentials( $user_id, $user_token, UserRepository $repository) {
         $user = $repository->find($user_id);
 
 

@@ -44,8 +44,13 @@ table_update:
     methods: [ POST ]
     controller: App\Controller\ApiController::updateTab
 
+table_add_user:
+    path: /api/table/{id}/user/add
+    methods: [ POST ]
+    controller: App\Controller\ApiController::addUserToTab
 
 #Tasks
+
 table_task_add:
     path: /api/table/{id}/task/add
     methods: [ POST ]
