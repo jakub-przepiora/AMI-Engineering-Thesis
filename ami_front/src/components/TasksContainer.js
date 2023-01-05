@@ -92,15 +92,22 @@ function App(props) {
 				body: raw,
 				redirect: 'follow'
 			};
-			fetch("http://127.0.0.1:8000/api/table/6", requestOptions)
+			const searchParams = new URLSearchParams(window.location.search);
+			fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id'), requestOptions)
 				.then((res) => res.json())
 				.then((data) => {
-
-					this.tasks = data;
+					console.log("dasdasd");
+					var getTab = JSON.stringify(data).slice(1,-1);
+					// getTab;
+					console.log(getTab);
+					// console.log(getTab);
+					console.log(JSON.stringify(columns));
+					setColumns(JSON.parse(getTab.replaceAll("'",'"')));
+					// setColumns(columns);
 				});
 		}
 
-
+		fetchTasks();
 		const wss = new WebSocket('ws://localhost:3001');
 
 		wss.onopen = () => {

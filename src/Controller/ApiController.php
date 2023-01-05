@@ -133,13 +133,33 @@ class ApiController extends AbstractController
                 'title' => $tab->getTaskName(),
                 'creator' => $tab->getIdCreator(),
                 'create_data' => $tab->getCreateData(),
-                'description' => $tab->getTaskDesc(),
+                'content' => $tab->getTaskDesc(),
                 "comments" =>[],
             ];
         }
         return $tasks;
     }
+    private function getTasksToColString(int $id_column){
 
+        $tasksFromDB = $this->getDoctrine()
+            ->getRepository(Tasks::class)
+            ->findBy(["id_column"=>$id_column]);
+
+        $tasks = "";
+
+        foreach ($tasksFromDB as $tab) {
+            $tasks .= "{'id':'".$tab->getId()."','content':'".$tab->getTaskDesc()."'},";
+//                'id' => $tab->getId(),
+//                'title' => $tab->getTaskName(),
+//                'creator' => $tab->getIdCreator(),
+//                'create_data' => $tab->getCreateData(),
+//                'content' => $tab->getTaskDesc(),
+//                "comments" =>[],
+//            ];
+        }
+
+        return rtrim($tasks,",");
+    }
 
     /**
      * @Route("/api/table/{id}", name="table_show", methods={"POST"})
@@ -165,18 +185,26 @@ class ApiController extends AbstractController
             ->getRepository(ColumnFromTable::class)
             ->findBy(["id_table"=>$id]);
 
-        $columns = [];
+        $columns = "{";
 
+//        foreach ($columnsById as $column) {
+//            $columns[] = [
+//                $column->getColumnName() =>[
+//                    'id' => $column->getId(),
+//                    'name' => $column->getColumnName(),
+//                    'items'=> $this->getTasksToCol($column->getId())
+//                ]
+//
+//            ];
+//        }
         foreach ($columnsById as $column) {
-            $columns[] = [
-                'id' => $column->getId(),
-                'title' => $column->getColumnName(),
-                'items'=> $this->getTasksToCol($column->getId())
-            ];
+            $columns .=
+                "'".$column->getColumnName()."':{'id':'".$column->getId()."','name':'".$column->getColumnName()."','items':[".$this->getTasksToColString($column->getId())."]},";
+
         }
-
-
-
+        $columns = rtrim($columns, ",");
+        $columns .= "}";
+//        $response = str_replace("'", '"', $columns);
         return $this->json($columns);
     }
 
