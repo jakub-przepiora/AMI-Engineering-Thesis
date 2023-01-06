@@ -145,6 +145,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/mercure-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/mercure" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/cboden/ratchet" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/setasign/fpdi" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/setasign/fpdi-tcpdf" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tecnickcom/tcpdf" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

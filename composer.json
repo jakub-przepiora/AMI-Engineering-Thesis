@@ -21,6 +21,8 @@
         "phpstan/phpdoc-parser": "^1.2",
         "ratchet/pawl": "^0.4.1",
         "sensio/framework-extra-bundle": "^6.2",
+        "setasign/fpdi": "^2.3",
+        "setasign/fpdi-tcpdf": "^2.3",
         "symfony/asset": "5.4.*",
         "symfony/console": "5.4.*",
         "symfony/doctrine-messenger": "5.4.*",
