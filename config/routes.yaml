@@ -128,3 +128,9 @@ timer_user_get_all:
     path: /timer/user/{id}
     methods: [ POST ]
     controller: App\Controller\TimersController::getTimersUser
+
+#Files
+file_comment_new:
+    path: /file/task/{id}/add
+    methods: [ POST ]
+    controller: App\Controller\FilesController::addFile
