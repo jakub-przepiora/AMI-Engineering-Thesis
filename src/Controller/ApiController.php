@@ -613,6 +613,7 @@ class ApiController extends AbstractController
      *      Comments METHODS
      *
      */
+
     /**
      * @Route("/api/table/{id}/comment/add", name="comment_new", methods={"POST"})
      */
@@ -739,7 +740,7 @@ class ApiController extends AbstractController
     }
 
 
-    public function checkCredentials( $user_id, $user_token, UserRepository $repository) {
+    static public function checkCredentials( $user_id, $user_token, UserRepository $repository) {
         $user = $repository->find($user_id);
 
 

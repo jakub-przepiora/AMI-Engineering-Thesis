@@ -107,3 +107,24 @@ comments_get_all:
     path: /api/table/{id}/comments
     methods: [ POST ]
     controller: App\Controller\ApiController::commentsGetAll
+
+#Timer
+timer_new:
+    path: /timer/task/{id}/add
+    methods: [ POST ]
+    controller: App\Controller\TimersController::addTimer
+
+timer_remove:
+    path: /timer/{id}/remove
+    methods: [ POST ]
+    controller: App\Controller\TimersController::removeTimer
+
+timer_get_all:
+    path: /timer/task/{id}
+    methods: [ POST ]
+    controller: App\Controller\TimersController::index
+
+timer_user_get_all:
+    path: /timer/user/{id}
+    methods: [ POST ]
+    controller: App\Controller\TimersController::getTimersUser
