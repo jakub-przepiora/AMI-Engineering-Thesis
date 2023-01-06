@@ -90,7 +90,7 @@ class MyTablesView extends React.Component {
     render() {
 
 
-        if (!this.state.hasPermission) {
+        if (!this.state.hasPermission || !this.state.teamTables) {
             return (<Err404 />);
         }
 

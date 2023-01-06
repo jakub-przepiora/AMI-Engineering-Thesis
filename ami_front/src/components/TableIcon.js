@@ -25,6 +25,7 @@ class TableIcon extends React.Component {
             title: this.props.title,
             desc: this.props.desc,
             id: "/table?id="+this.props.id,
+            raportUrl: "http://127.0.0.1:8000/raport/table/"+this.props.id
         };
     }
 
@@ -56,6 +57,7 @@ class TableIcon extends React.Component {
                     <CardActions>
                         <Button size="small" href={this.state.id}>Open</Button>
                         <Button size="small">Delete</Button>
+                        <Button size="small" href={this.state.raportUrl}>Raport</Button>
                     </CardActions>
                 </Card>
             </Grid>

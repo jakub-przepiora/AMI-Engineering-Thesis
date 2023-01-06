@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable, useDrop } from "react-beautiful-dnd";
 
 import Cookies from "js-cookie";
+import Err404 from "../pages/Error404";
 
 
 
@@ -16,7 +17,11 @@ function App({ socket }, props) {
 	const [columns, setColumns] = useState(taskStatus);
 	const [columnsCurr, setColumnsCurr] = useState(columns);
 	const [emptyTable, setEmptyTable] =useState('');
+
+
+
 	useEffect(() => {
+
 		//WEB SOCKETS
 
 		const updateTask = (data) => {

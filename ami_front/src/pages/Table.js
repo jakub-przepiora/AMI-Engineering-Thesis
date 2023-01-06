@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import AddTask from "../components/AddTask";
 import TasksContainer from "../components/TasksContainer";
 
@@ -9,11 +9,37 @@ import Container from "@mui/material/Container";
 import AddUser from "../components/AddUser";
 
 import ListUser from "../components/ListUser";
+import Cookies from "js-cookie";
+import Err404 from "./Error404";
 
 
 const Task = () => {
-
+    const [hasPermission, setHasPermission] =useState('');
     const ws = new WebSocket('ws://localhost:3001');
+
+    useEffect(() => {
+        const checkPermission = async () => {
+            const token = Cookies.get('current_token');
+            const userId = Cookies.get('current_id');
+
+            const response = await fetch('http://127.0.0.1:8000/api/checkjwt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: userId,
+                    token: token
+                })
+            });
+            const data = await response.json();
+            setHasPermission(data.status);
+        }
+        checkPermission();
+    }, []);
+    if (!hasPermission ) {
+        return (<Err404 />);
+    }
     return (
         <Container maxWidth="xl">
             <Stack

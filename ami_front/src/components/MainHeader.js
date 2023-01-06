@@ -14,6 +14,9 @@ import Link from '@mui/material/Link';
 
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
+import {useEffect, useState} from "react";
+import Cookies from "js-cookie";
+import Err404 from "../pages/Error404";
 
 const pagesBasic = [
         {
@@ -45,14 +48,22 @@ const pagesSettings = [
         url: "/register"
     }
 ];
+const pagesUserSettings = [
 
-
+    {
+        name: "Settings",
+        url: "/settings"
+    }
+];
 const pages = ['About app', 'Get start'];
 const settings = ['Profile', 'Settings', 'Tables', 'Logout'];
 
 export default function MainHeader(){
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [hasPermission, setHasPermission] = React.useState('');
+    const [menuToRender, setMenuToRender] =  React.useState([]);
+    const [menuUserToRender, setMenuUserToRender] =  React.useState([]);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -73,6 +84,39 @@ export default function MainHeader(){
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+
+
+    useEffect(() => {
+        const checkPermission = async () => {
+            const token = Cookies.get('current_token');
+            const userId = Cookies.get('current_id');
+
+            const response = await fetch('http://127.0.0.1:8000/api/checkjwt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: userId,
+                    token: token
+                })
+            });
+            const data = await response.json();
+            setHasPermission(data.status);
+            if (!data.status ) {
+                setMenuToRender(pagesBasic);
+                setMenuUserToRender(pagesSettings);
+            }
+            else {
+                setMenuToRender(pagesLoged);
+                setMenuUserToRender(pagesUserSettings);
+            }
+        }
+        checkPermission();
+
+    }, []);
+
 
     return (
         <AppBar position="static">
@@ -153,7 +197,7 @@ export default function MainHeader(){
                         LOGO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pagesLoged.map((page) => (
+                        {menuToRender.map((page) => (
                             <Link
                                 href={page.url}
                                 onClick={handleCloseNavMenu}
@@ -186,7 +230,7 @@ export default function MainHeader(){
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {pagesSettings.map((setting) => (
+                            {menuUserToRender.map((setting) => (
                                 <Link
                                     href={setting.url}
                                     onClick={handleCloseNavMenu}
