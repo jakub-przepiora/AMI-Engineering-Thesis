@@ -49,7 +49,7 @@ export default function TemporaryDrawer(props) {
             </div>
 
             <div>
-                <CommentsForm/>
+                <CommentsForm taskid={clickedTask}/>
             </div>
         </Box>
     );

@@ -630,9 +630,9 @@ class ApiController extends AbstractController
 
         $commentNew->setContent(htmlspecialchars($data["content"]));
         $commentNew->setCreatorId($data['user_id']);
-        $date = new DateTime();
+        $dateT = new DateTime();
 
-        $commentNew->getCreateData($date->setTimestamp(time()));
+        $commentNew->setCreateData($dateT->setTimestamp(time()));
 
         $commentNew->setTaskId($data["task_id"]);
 
@@ -697,15 +697,16 @@ class ApiController extends AbstractController
 
         $commentsById = $this->getDoctrine()
             ->getRepository(Comments::class)
-            ->findBy(["id_task"=>$data["task_id"]]);
+            ->findBy(["task_id"=>$data["task_id"]]);
 
         $comments = [];
 
         foreach ($commentsById as $comment) {
             $comments[] = [
                 'id' => $comment->getId(),
-                'id_task' => $comment->getTaskId(),
-                'creator' => $comment->getCreatorId(),
+
+                'text' => $comment->getContent(),
+                'creator' => $this->getUserNameById($comment->getCreatorId()),
                 'date' => $comment->getCreateData(),
 
             ];
@@ -716,6 +717,12 @@ class ApiController extends AbstractController
 
     }
 
+    public function getUserNameById($userId){
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($userId);
+        return $user->getEmail();
+    }
     /**
      *
      *      Public METHODS

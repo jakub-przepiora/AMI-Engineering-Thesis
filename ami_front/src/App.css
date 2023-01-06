@@ -187,3 +187,9 @@
   border-radius: 5px;
   padding: 20px;
 }
+.single--omment {
+  background-color: rgba(201, 201, 201, 0.38);
+  margin: 10px 0;
+  padding: 5px;
+  border-radius: 5px;
+}

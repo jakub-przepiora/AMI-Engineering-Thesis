@@ -104,7 +104,7 @@ class RaportPDFController extends AbstractController
         foreach ($contentPDF["data_table"] as $row) {
             $pdf->Cell(20, 10, $row["task"], 1, 0, 'C');
             $pdf->Cell(40, 10, $row['start_timer'], 1, 0, 'C');
-            $pdf->Cell(30, 10, $row['value'], 1, 0, 'C');
+            $pdf->Cell(30, 10, $this->msToTime(intval($row['value'])), 1, 0, 'C');
             $pdf->Cell(50, 10, $row['user'], 1, 0, 'C');
             $pdf->Cell(30, 10, $row['task_status'], 1, 0, 'C');
             $pdf->Ln();
@@ -112,5 +112,23 @@ class RaportPDFController extends AbstractController
 
         // Output the PDF to the browser
         $pdf->Output($title.'.pdf', 'I');
+    }
+    function msToTime($duration) {
+        // Get the minutes
+        $minutes = floor($duration / (1000 * 60));
+
+        // Get the seconds
+        $seconds = floor(($duration % (1000 * 60)) / 1000);
+
+        // Get the milliseconds
+        $milliseconds = $duration % 1000;
+
+        // Pad the minutes and seconds with leading zeros if necessary
+        $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+        $seconds = str_pad($seconds, 2, '0', STR_PAD_LEFT);
+        $milliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
+
+        // Return the formatted time string
+        return "$minutes:$seconds:$milliseconds";
     }
 }
