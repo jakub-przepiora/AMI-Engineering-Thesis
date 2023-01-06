@@ -5,17 +5,14 @@ import Box from '@mui/material/Box';
 
 import Cookies from "js-cookie";
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import {Stack} from "@mui/material";
+
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Grid from "@mui/material/Grid";
 import PublishIcon from '@mui/icons-material/Publish';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import Typography from "@mui/material/Typography";
-import * as PropTypes from "prop-types";
+
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -58,16 +55,16 @@ const FilesSection = ( props) => {
 
     const sendFile = (e) => {
         e.preventDefault();
-        console.log(sendedFile);
+
         const token = Cookies.get('current_token');
         const userId = Cookies.get('current_id');
-        var formdata = new FormData();
+        const formdata = new FormData();
         formdata.append("file", sendedFile, sendedFile.name);
         formdata.append("token", token);
         formdata.append("user_id", userId);
         formdata.append("task_id", props.taskid);
 
-        var requestOptions = {
+        const requestOptions = {
             method: 'POST',
             body: formdata,
             redirect: 'follow'
@@ -90,17 +87,17 @@ const FilesSection = ( props) => {
         const getFilesTotask = () => {
             const token = Cookies.get('current_token');
             const userId = Cookies.get('current_id');
-            var myHeaders = new Headers();
+            const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
-            var raw = JSON.stringify({
+            const raw = JSON.stringify({
                 "user_id": userId,
                 "token": token,
 
 
             });
 
-            var requestOptions = {
+            const requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
                 body: raw,
@@ -122,7 +119,7 @@ const FilesSection = ( props) => {
     },[]);
     return (
         <div >
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{marginTop:"20px"}}>
                 {filesList.map((filet) => (
                     <Grid item xs={6} md={2}>
                         <Item sx={{
@@ -146,7 +143,7 @@ const FilesSection = ( props) => {
                         <div>
                             <PublishIcon sx={{ fontSize: 40 }} />
                         </div>
-                        <Typography variant="subtitl2" gutterBottom>
+                        <Typography variant="subtitl2"  gutterBottom>
                            <b> Add File</b>
                         </Typography>
                     </Item>

@@ -5,8 +5,9 @@ const CommentsSection = ({ comments }) => {
         <div >
             {comments.map((comment) => (
                 <div key={comment.id} className="single--omment">
+
                     <p>{comment.text}</p>
-                    <p><i> By <b>{comment.creator}</b></i></p>
+                    <p><i> By <b>{comment.creator}</b> at <b>{comment.date}</b></i></p>
 
                 </div>
             ))}

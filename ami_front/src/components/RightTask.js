@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import CommentsForm from '../components/CommentsForm'
 import Stopwatch from "./TimeWatch";
 import FilesSection from "./FilesSection";
+import AssignUser from "./AssignUser";
 
 export default function TemporaryDrawer(props) {
     const [state, setState] = React.useState({
@@ -79,6 +80,7 @@ export default function TemporaryDrawer(props) {
                         >
                             Close
                         </Button>
+                        <AssignUser/>
                         <Stopwatch taskid={clickedTask}/>
                         {list("right",)}
                     </Drawer>

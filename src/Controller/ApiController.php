@@ -707,7 +707,7 @@ class ApiController extends AbstractController
 
                 'text' => $comment->getContent(),
                 'creator' => $this->getUserNameById($comment->getCreatorId()),
-                'date' => $comment->getCreateData(),
+                'date' => $comment->getCreateData()->format('Y-m-d H:i:s'),
 
             ];
         }
