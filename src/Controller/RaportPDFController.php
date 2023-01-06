@@ -27,7 +27,7 @@ class RaportPDFController extends AbstractController
 //            return $this->json(["status"=>"You don't have permission"]);
 //        }
 
-        $this->generatePdfAction(["type"=>"user"]);
+        $this->generatePdfAction(["type"=>"user", "data_table"=>[]]);
 //        $fileById = $this->getDoctrine()
 //            ->getRepository(Files::class)
 //            ->findBy(["task_id"=>$id]);
@@ -64,9 +64,25 @@ class RaportPDFController extends AbstractController
         // Add a page
         $pdf->AddPage();
 
-        // Set the font and write some text
-        $pdf->SetFont('helvetica', '', 14);
-        $pdf->Write(0, 'Hello world', '', 0, 'L', true, 0, false, false, 0);
+        $pdf->SetFont('helvetica', 'B', 17);
+
+        $pdf->Write(20, 'Raport', '', 0, 'L', true, 0, false, true, 0);
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->Cell(30, 10, 'Task', 1, 0, 'C');
+        $pdf->Cell(30, 10, 'Start timer', 1, 0, 'C');
+        $pdf->Cell(30, 10, 'Timer Value', 1, 0, 'C');
+        $pdf->Cell(30, 10, 'User', 1, 0, 'C');
+        $pdf->Cell(30, 10, 'Task Status', 1, 0, 'C');
+        $pdf->Ln();
+        $pdf->SetFont('helvetica', '', 15);
+        foreach ($contentPDF["data_table"] as $row) {
+            $pdf->Cell(30, 10, $row["task"], 1, 0, 'C');
+            $pdf->Cell(30, 10, $row['start_timer'], 1, 0, 'C');
+            $pdf->Cell(30, 10, $row['value'], 1, 0, 'C');
+            $pdf->Cell(30, 10, $row['user'], 1, 0, 'C');
+            $pdf->Cell(30, 10, $row['task_status'], 1, 0, 'C');
+            $pdf->Ln();
+        }
 
         // Output the PDF to the browser
         $pdf->Output($title.'.pdf', 'I');
