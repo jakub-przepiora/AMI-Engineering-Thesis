@@ -146,7 +146,7 @@ file_comment_get_all:
     controller: App\Controller\FilesController::index
 
 #Raport PDF
-raport_id_user:
-    path: /raport/user/{id}
+raport_id_table:
+    path: /raport/table/{id}
     methods: [ GET ]
     controller: App\Controller\RaportPDFController::index

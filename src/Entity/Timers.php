@@ -28,7 +28,7 @@ class Timers
     private $id_user;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="string", length=20)
      */
     private $value;
 

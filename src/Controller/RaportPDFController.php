@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\ColumnFromTable;
 use App\Entity\Files;
+use App\Entity\Tasks;
+use App\Entity\Timers;
+use App\Entity\User;
 use App\Repository\UserRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,9 +20,9 @@ use setasign\Fpdi\Tcpdf\Fpdi;
 class RaportPDFController extends AbstractController
 {
     /**
-     * @Route("/raport/user/{id}", name="raport_id_user", methods={"GET"})
+     * @Route("/raport/table/{id}", name="raport_id_table", methods={"GET"})
      */
-    public function index(int $id, UserRepository $repository, Request $request): JsonResponse
+    public function index(int $id, UserRepository $repository, Request $request)
     {
 //        $data = json_decode($request->getContent(), true);
 
@@ -27,29 +31,51 @@ class RaportPDFController extends AbstractController
 //            return $this->json(["status"=>"You don't have permission"]);
 //        }
 
-        $this->generatePdfAction(["type"=>"user", "data_table"=>[]]);
-//        $fileById = $this->getDoctrine()
-//            ->getRepository(Files::class)
-//            ->findBy(["task_id"=>$id]);
-//
-//        $file = [];
-//
-//        foreach ($fileById as $filey) {
-//            $file[] = [
-//                'id' => $filey->getId(),
-//                'id_task' => $filey->getTaskId(),
-//                'id_user' => $filey->getUserId(),
-//                'date' => $filey->getAddData(),
-//                'filename' => $filey->getName(),
-//
-//            ];
-//        }
-//
-//
-//        return $this->json($file);
+
+        $tasksFromTable = $this->getDoctrine()
+            ->getRepository(Tasks::class)
+            ->findBy(["id_table"=>$id]);
+
+        $rows = [];
+
+        foreach ($tasksFromTable as $task) {
+
+           $timers = $this->getDoctrine()
+                ->getRepository(Timers::class)
+                ->findBy(["id_task"=>$task->getId()]);
+            foreach ($timers as $timer) {
+                $date = $timer->getDataStart();
+
+                $rows[] = [
+                    'task' => $task->getId(),
+                    'start_timer' => $date->format('Y-m-d H:i:s'),
+                    'value' => $timer->getValue(),
+                    'user' => $this->getUserNameById($timer->getIdUser()),
+                    'task_status' => $this->getColumnNameById($task->getIdColumn())
+
+
+                ];
+            }
+
+        }
+//        var_dump($rows);
+        $this->generatePdfAction(["type"=>"user", "data_table"=>$rows]);
+
+//        return $this->json($rows);
 
     }
-
+    public function getColumnNameById($colId){
+        $col = $this->getDoctrine()
+            ->getRepository(ColumnFromTable::class)
+            ->find($colId);
+        return $col->getColumnName();
+    }
+    public function getUserNameById($userId){
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($userId);
+        return $user->getEmail();
+    }
 
     public function generatePdfAction(array $contentPDF)
     {
@@ -66,20 +92,20 @@ class RaportPDFController extends AbstractController
 
         $pdf->SetFont('helvetica', 'B', 17);
 
-        $pdf->Write(20, 'Raport', '', 0, 'L', true, 0, false, true, 0);
+        $pdf->Write(20, 'Raport '.$date->format('Y-m-d-H-i-s'), '', 0, 'L', true, 0, false, true, 0);
         $pdf->SetFont('helvetica', '', 12);
-        $pdf->Cell(30, 10, 'Task', 1, 0, 'C');
-        $pdf->Cell(30, 10, 'Start timer', 1, 0, 'C');
+        $pdf->Cell(20, 10, 'Task', 1, 0, 'C');
+        $pdf->Cell(40, 10, 'Start timer', 1, 0, 'C');
         $pdf->Cell(30, 10, 'Timer Value', 1, 0, 'C');
-        $pdf->Cell(30, 10, 'User', 1, 0, 'C');
+        $pdf->Cell(50, 10, 'User E-mail', 1, 0, 'C');
         $pdf->Cell(30, 10, 'Task Status', 1, 0, 'C');
         $pdf->Ln();
-        $pdf->SetFont('helvetica', '', 15);
+        $pdf->SetFont('helvetica', '', 10);
         foreach ($contentPDF["data_table"] as $row) {
-            $pdf->Cell(30, 10, $row["task"], 1, 0, 'C');
-            $pdf->Cell(30, 10, $row['start_timer'], 1, 0, 'C');
+            $pdf->Cell(20, 10, $row["task"], 1, 0, 'C');
+            $pdf->Cell(40, 10, $row['start_timer'], 1, 0, 'C');
             $pdf->Cell(30, 10, $row['value'], 1, 0, 'C');
-            $pdf->Cell(30, 10, $row['user'], 1, 0, 'C');
+            $pdf->Cell(50, 10, $row['user'], 1, 0, 'C');
             $pdf->Cell(30, 10, $row['task_status'], 1, 0, 'C');
             $pdf->Ln();
         }
