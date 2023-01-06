@@ -10,7 +10,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import IconButton from "@mui/material/IconButton";
 import Cookies from "js-cookie";
 
-const Stopwatch = () => {
+const Stopwatch = (props) => {
     const [time, setTime] = useState(0);
     const [running, setRunning] = useState(false);
 
@@ -36,7 +36,7 @@ const Stopwatch = () => {
                 redirect: 'follow'
             };
 
-            fetch("http://localhost:8000/timer/task/2/add", requestOptions)
+            fetch("http://localhost:8000/timer/task/"+props.taskid+"/add", requestOptions)
                 .then(response => response.text())
                 .then(result => {
 
