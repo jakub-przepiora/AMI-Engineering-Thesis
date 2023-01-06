@@ -139,3 +139,8 @@ file_comment_remove:
     path: /file/task/{id}/remove
     methods: [ POST ]
     controller: App\Controller\FilesController::removeFile
+
+file_comment_get_all:
+    path: /file/task/{id}
+    methods: [ POST ]
+    controller: App\Controller\FilesController::index

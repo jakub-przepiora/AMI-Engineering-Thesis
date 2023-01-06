@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FilesController extends AbstractController
 {
     /**
-     * @Route("/file/comment/{id}", name="file_comment_get_all", methods={"POST"})
+     * @Route("/file/task/{id}", name="file_comment_get_all", methods={"POST"})
      */
     public function index(int $id, UserRepository $repository, Request $request): JsonResponse
     {
@@ -32,17 +32,17 @@ class FilesController extends AbstractController
 
         $fileById = $this->getDoctrine()
             ->getRepository(Files::class)
-            ->findBy(["id_task"=>$id]);
+            ->findBy(["task_id"=>$id]);
 
         $file = [];
 
         foreach ($fileById as $filey) {
             $file[] = [
                 'id' => $filey->getId(),
-                'id_task' => $filey->getIdTask(),
-                'id_user' => $filey->getIdUser(),
-                'date' => $filey->getDataStart(),
-                'value' => $filey->getValue(),
+                'id_task' => $filey->getTaskId(),
+                'id_user' => $filey->getUserId(),
+                'date' => $filey->getAddData(),
+                'filename' => $filey->getName(),
 
             ];
         }
