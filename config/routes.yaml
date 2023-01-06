@@ -134,3 +134,8 @@ file_comment_new:
     path: /file/task/{id}/add
     methods: [ POST ]
     controller: App\Controller\FilesController::addFile
+
+file_comment_remove:
+    path: /file/task/{id}/remove
+    methods: [ POST ]
+    controller: App\Controller\FilesController::removeFile

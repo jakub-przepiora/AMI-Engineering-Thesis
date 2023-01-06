@@ -67,23 +67,18 @@ class FilesController extends AbstractController
 
         $fileNew = new Files();
 
-//        if(!$this->uploadFile($request)) {
-//            return $this->json([
-//                "status"=>"Error I can't add this file",
-//
-//            ]);
-//        }
         $uploadedFile = $request->files->get('file');
         if (!$uploadedFile) {
             throw new BadRequestHttpException('"file" is required');
         }
-        $fileNew->setName(str_replace(" ", "_",$request->files->get('filename')));
+        $fileNameNew = $fileUploader->upload($uploadedFile);
+        $fileNew->setName(str_replace(" ", "_",$fileNameNew));
         $fileNew->setUserId($request->get('user_id'));
         $date = new DateTime();
 
         $fileNew->setAddData($date->setTimestamp(time()));
 
-        $fileNew->setLinkToFile($fileUploader->upload($uploadedFile));
+        $fileNew->setLinkToFile($fileNameNew);
 
         $fileNew->setTaskId(intval($request->get('task_id')));
 
@@ -98,7 +93,7 @@ class FilesController extends AbstractController
     }
 
     /**
-     * @Route("/file/comment/remove", name="file_comment_remove", methods={"POST"})
+     * @Route("/file/task/{id}/remove", name="file_comment_remove", methods={"POST"})
      */
     public function removeFile(int $id, UserRepository $repository, Request $request): JsonResponse
     {
@@ -113,12 +108,16 @@ class FilesController extends AbstractController
 
 
         $entityManager = $this->getDoctrine()->getManager();
-        $file = $entityManager->getRepository(Files::class)->find($id);
+        $file = $entityManager->getRepository(Files::class)->find($data["file_id"]);
 
         if (!$file) {
-            return $this->json('No file found for id' . $id, 404);
+            return $this->json('No file found for id: ' . $data["file_id"], 404);
         }
+        if($file->getUserId() != $data['user_id'])
+            return $this->json([
+                "status"=>"File it's not yours",
 
+            ]);
         $entityManager->remove($file);
         $entityManager->flush();
 
