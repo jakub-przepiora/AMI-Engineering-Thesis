@@ -436,6 +436,41 @@ class ApiController extends AbstractController
             'id'=> $new_task->getId()
         ]);
     }
+    /**
+     * @Route("/api/table/{id}/task/remove", name="task_remove", methods={"POST"})
+     */
+    public function removeTask(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+            return $this->json(["status" => "You don't have permission"]);
+        }
+
+        // check owner
+        if(!$this->checkOwnerTable($id, $data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You aren't owner this table"]);
+        }
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $task = $entityManager->getRepository(Tasks::class)->find($data["task_id"]);
+
+        if (!$task) {
+            return $this->json('No project found for id' . $data["col_id"], 404);
+        }
+
+        $entityManager->remove($task);
+        $entityManager->flush();
+
+        return $this->json([
+            "status"=>'Removed task successfully with id '.$data["task_id"],
+
+        ]);
+    }
 
     /**
      * @Route("/api/table/{id}/tasks", name="table_tasks_get_all", methods={"POST"})
@@ -503,6 +538,43 @@ class ApiController extends AbstractController
 
         ]);
     }
+
+    /**
+     * @Route("/api/table/{id}/column/remove", name="column_remove", methods={"POST"})
+     */
+    public function removeColumn(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+            return $this->json(["status" => "You don't have permission"]);
+        }
+
+        // check owner
+        if(!$this->checkOwnerTable($id, $data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You aren't owner this table"]);
+        }
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $column = $entityManager->getRepository(ColumnFromTable::class)->find($data["col_id"]);
+
+        if (!$column) {
+            return $this->json('No column found for id' . $data["col_id"], 404);
+        }
+
+        $entityManager->remove($column);
+        $entityManager->flush();
+
+        return $this->json([
+            "status"=>'Removed column successfully with id '.$data["col_id"],
+
+        ]);
+    }
+
     /**
      * @Route("/api/table/{id}/columns", name="table_columns_get_all", methods={"POST"})
      */

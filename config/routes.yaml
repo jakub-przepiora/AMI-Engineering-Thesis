@@ -70,6 +70,11 @@ table_tasks_get_all:
     methods: [ POST ]
     controller: App\Controller\ApiController::tasksGetAll
 
+task_remove:
+    path: /api/table/{id}/task/remove
+    methods: [ POST ]
+    controller: App\Controller\ApiController::removeTask
+
 #Columns
 column_new:
     path: /api/table/{id}/column/add
@@ -80,3 +85,8 @@ table_columns_get_all:
     path: /api/table/{id}/columns
     methods: [ POST ]
     controller: App\Controller\ApiController::columnGetAll
+
+column_remove:
+    path: /api/table/{id}/column/remove
+    methods: [ POST ]
+    controller: App\Controller\ApiController::removeColumn

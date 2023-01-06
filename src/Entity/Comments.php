@@ -23,6 +23,11 @@ class Comments
     private $creator_id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $task_id;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $content;
@@ -45,6 +50,18 @@ class Comments
     public function setCreatorId(int $creator_id): self
     {
         $this->creator_id = $creator_id;
+
+        return $this;
+    }
+
+    public function getTaskId(): ?int
+    {
+        return $this->task_id;
+    }
+
+    public function setTaskId(int $task_id): self
+    {
+        $this->task_id = $task_id;
 
         return $this;
     }
