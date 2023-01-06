@@ -4,6 +4,7 @@ import { DragDropContext, Draggable, Droppable, useDrop } from "react-beautiful-
 
 import Cookies from "js-cookie";
 import Err404 from "../pages/Error404";
+import RightTask from "../components/RightTask";
 
 
 
@@ -19,6 +20,12 @@ function App({ socket }, props) {
 	const [emptyTable, setEmptyTable] =useState('');
 
 
+	const [state, setState] = React.useState({
+		top: false,
+		left: false,
+		bottom: false,
+		right: false,
+	});
 
 	useEffect(() => {
 
@@ -211,7 +218,13 @@ function App({ socket }, props) {
 
 
 	};
+	const toggleDrawer = (anchor, open) => (event) => {
+		if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+			return;
+		}
 
+		setState({ ...state, [anchor]: open });
+	};
 	return (
 		<div>
 
@@ -277,8 +290,14 @@ function App({ socket }, props) {
 																				...provided.draggableProps.style
 																			}}
 																		>
-																			<p className='task-title'><b>{item.title}</b></p>
-																			{item.content}
+																			<p className='task-title'
+																			   onClick={toggleDrawer("right", false)}
+																			   onKeyDown={toggleDrawer("right", false)}
+																			>
+																				<RightTask taskid={item.id} title={item.title} content={item.content}/>
+
+																			</p>
+
 																		</div>
 																	);
 																}}
