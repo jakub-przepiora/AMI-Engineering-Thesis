@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\ColumnFromTable;
+use App\Entity\Comments;
 use App\Entity\Tasks;
 use App\Entity\TaskTables;
 use App\Entity\User;
@@ -607,6 +608,113 @@ class ApiController extends AbstractController
         return $this->json($columns);
 
     }
+    /**
+     *
+     *      Comments METHODS
+     *
+     */
+    /**
+     * @Route("/api/table/{id}/comment/add", name="comment_new", methods={"POST"})
+     */
+    public function addComment(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+            return $this->json(["status" => "You don't have permission"]);
+        }
+
+        $commentNew = new Comments();
+
+        $commentNew->setContent(htmlspecialchars($data["content"]));
+        $commentNew->setCreatorId($data['user_id']);
+        $date = new DateTime();
+
+        $commentNew->getCreateData($date->setTimestamp(time()));
+
+        $commentNew->setTaskId($data["task_id"]);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($commentNew);
+        $entityManager->flush();
+
+        return $this->json([
+            "status"=>'Created comment added',
+
+        ]);
+    }
+
+    /**
+     * @Route("/api/table/{id}/comment/remove", name="comment_remove", methods={"POST"})
+     */
+    public function removeComment(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+            return $this->json(["status" => "You don't have permission"]);
+        }
+
+        // check owner
+        if(!$this->checkOwnerTable($id, $data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You aren't owner this table"]);
+        }
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $comment = $entityManager->getRepository(Comments::class)->find($data["comment_id"]);
+
+        if (!$comment) {
+            return $this->json('No comment found for id' . $data["comment_id"], 404);
+        }
+
+        $entityManager->remove($comment);
+        $entityManager->flush();
+
+        return $this->json([
+            "status"=>'Removed comment successfully',
+
+        ]);
+    }
+
+    /**
+     * @Route("/api/table/{id}/comments", name="comments_get_all", methods={"POST"})
+     */
+    public function commentsGetAll(int $id, UserRepository $repository, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You don't have permission"]);
+        }
+
+
+        $commentsById = $this->getDoctrine()
+            ->getRepository(Comments::class)
+            ->findBy(["id_task"=>$data["task_id"]]);
+
+        $comments = [];
+
+        foreach ($commentsById as $comment) {
+            $comments[] = [
+                'id' => $comment->getId(),
+                'id_task' => $comment->getTaskId(),
+                'creator' => $comment->getCreatorId(),
+                'date' => $comment->getCreateData(),
+
+            ];
+        }
+
+
+        return $this->json($comments);
+
+    }
+
     /**
      *
      *      Public METHODS

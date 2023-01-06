@@ -90,3 +90,20 @@ column_remove:
     path: /api/table/{id}/column/remove
     methods: [ POST ]
     controller: App\Controller\ApiController::removeColumn
+
+#Comments
+
+comment_new:
+    path: /api/table/{id}/comment/add
+    methods: [ POST ]
+    controller: App\Controller\ApiController::addComment
+
+comment_remove:
+    path: /api/table/{id}/comment/remove
+    methods: [ POST ]
+    controller: App\Controller\ApiController::removeComment
+
+comments_get_all:
+    path: /api/table/{id}/comments
+    methods: [ POST ]
+    controller: App\Controller\ApiController::commentsGetAll
