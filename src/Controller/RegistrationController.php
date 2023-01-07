@@ -30,6 +30,7 @@ class RegistrationController extends AbstractController
 //        if ($form->isSubmitted() && $form->isValid()) {
 
         // 3) Encode the password (you could also do this via Doctrine listener)
+
         $password = $passwordEncoder->encodePassword($user, $user->getPassword());
         $user->setPassword($password);
 
@@ -41,7 +42,8 @@ class RegistrationController extends AbstractController
         // ... do any other work - like sending them an email, etc
         // maybe set a "flash" success message for the user
 
-        return $this->json('Registered SUCCESS new user');
+        return $this->json(['status' => "Registered"]);
+//        return $this->json($user->getPassword());
 //        }
 
 //        return $this->json('Registered ERROR new user');
