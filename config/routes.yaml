@@ -25,6 +25,11 @@ table_new:
     path: /api/table/add
     methods: [POST]
     controller: App\Controller\ApiController::new
+table_delete:
+    path: /table/{id}/remove
+    methods: [POST]
+    controller: App\Controller\ApiController::removeTable
+
 table_team_index:
     path: /api/teamtables
     methods: [POST]

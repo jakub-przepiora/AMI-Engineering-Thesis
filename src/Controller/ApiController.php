@@ -236,21 +236,39 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/table/{id}", name="table_delete", methods={"DELETE"})
+     * @Route("/table/{id}/remove", name="table_delete", methods={"POST"})
      */
-    public function delete(int $id): Response
+    public function removeTable(int $id, UserRepository $repository, Request $request): JsonResponse
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $project = $entityManager->getRepository(Project::class)->find($id);
+        $data = json_decode($request->getContent(), true);
 
-        if (!$project) {
-            return $this->json('No project found for id' . $id, 404);
+
+
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
+            return $this->json(["status" => "You don't have permission"]);
         }
 
-        $entityManager->remove($project);
+        // check owner
+        if(!$this->checkOwnerTable($id, $data['user_id'], $data['token'], $repository)) {
+
+            return $this->json(["status"=>"You aren't owner this table"]);
+        }
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $tab = $entityManager->getRepository(TaskTables::class)->find($id);
+
+        if (!$tab) {
+            return $this->json('No table found for id' . $id, 404);
+        }
+
+        $entityManager->remove($tab);
         $entityManager->flush();
 
-        return $this->json('Deleted a project successfully with id ' . $id);
+        return $this->json([
+            "status"=>'Removed tab successfully with id '.$id,
+
+        ]);
     }
 
     private function updatePositionTask($id_task, $id_destination_col){
