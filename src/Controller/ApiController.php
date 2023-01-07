@@ -461,7 +461,7 @@ class ApiController extends AbstractController
         $task = $entityManager->getRepository(Tasks::class)->find($data["task_id"]);
 
         if (!$task) {
-            return $this->json('No project found for id' . $data["col_id"], 404);
+            return $this->json('No project found for id' . $data["task_id"], 404);
         }
 
         $entityManager->remove($task);

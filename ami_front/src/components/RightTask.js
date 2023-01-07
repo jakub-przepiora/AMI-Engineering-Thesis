@@ -10,6 +10,7 @@ import CommentsForm from '../components/CommentsForm'
 import Stopwatch from "./TimeWatch";
 import FilesSection from "./FilesSection";
 import AssignUser from "./AssignUser";
+import RemoveTaskBtn from "./RemoveTaskBtn";
 
 export default function TemporaryDrawer(props) {
     const [state, setState] = React.useState({
@@ -83,6 +84,7 @@ export default function TemporaryDrawer(props) {
                         <AssignUser taskid={clickedTask}/>
                         <Stopwatch taskid={clickedTask}/>
                         {list("right",)}
+                        <RemoveTaskBtn taskid={clickedTask}/>
                     </Drawer>
                 </React.Fragment>
 
