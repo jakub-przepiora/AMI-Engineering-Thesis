@@ -150,3 +150,15 @@ raport_id_table:
     path: /raport/table/{id}
     methods: [ GET ]
     controller: App\Controller\RaportPDFController::index
+
+#Assign in task
+
+task_assign:
+    path: /task/{id}/user/assign
+    methods: [ POST ]
+    controller: App\Controller\AssignUserController::assignUser
+
+task_get_assign:
+    path: /task/{id}/user
+    methods: [ POST ]
+    controller: App\Controller\AssignUserController::getAssignedUser

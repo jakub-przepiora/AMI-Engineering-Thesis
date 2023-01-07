@@ -80,7 +80,7 @@ export default function TemporaryDrawer(props) {
                         >
                             Close
                         </Button>
-                        <AssignUser/>
+                        <AssignUser taskid={clickedTask}/>
                         <Stopwatch taskid={clickedTask}/>
                         {list("right",)}
                     </Drawer>

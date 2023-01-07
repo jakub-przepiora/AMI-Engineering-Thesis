@@ -8,10 +8,11 @@ import Cookies from "js-cookie";
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import {Stack} from "@mui/material";
+import {Chip, Stack} from "@mui/material";
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import Typography from "@mui/material/Typography";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,8 +35,9 @@ const style = {
     pb: 3,
 };
 
-const AssignUser = ({ socket }) => {
+const AssignUser = (props) => {
     const [users, setUsers] = useState([]);
+    const [assignedUser, setAssignedUser] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
 
     const [open, setOpen] = useState(false);
@@ -83,11 +85,12 @@ const AssignUser = ({ socket }) => {
 
         myHeaders.append("Content-Type", "application/json");
 
-
+        const searchParams = new URLSearchParams(window.location.search);
         var raw = JSON.stringify({
             "user_id": userId,
             "token": token,
-            "id_del": id
+            "id_assign": id,
+            "table_id": searchParams.get('id')
 
         });
 
@@ -97,8 +100,8 @@ const AssignUser = ({ socket }) => {
             body: raw,
             redirect: 'follow'
         };
-        const searchParams = new URLSearchParams(window.location.search);
-        fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id')+"/user/remove", requestOptions)
+
+        fetch("http://127.0.0.1:8000/task/"+props.taskid+"/user/assign", requestOptions)
             .then(response => response.json())
             .then(data => {
 
@@ -147,6 +150,47 @@ const AssignUser = ({ socket }) => {
     //
     //
     // };
+    useEffect(() => {
+        const checkAssignedUsers = () => {
+            const token = Cookies.get('current_token');
+            const userId = Cookies.get('current_id');
+
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            const searchParams = new URLSearchParams(window.location.search);
+            var raw = JSON.stringify({
+                "user_id": userId,
+                "token": token,
+
+            });
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:8000/task/"+props.taskid+"/user", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    if(!result.status)
+                    setAssignedUser(result);
+                })
+                .catch(error => console.log('error', error));
+        };
+        checkAssignedUsers();
+    },[]);
+if(assignedUser.email){
+    return (
+
+        <Typography gutterBottom variant="subtitle2" component="div" sx={{margin:"20px"}}>
+            <b>Assign to:</b> <Chip label={assignedUser.email} variant="outlined"  color="primary" sx={{marginLeft:"10px",width:"autos"}}/>
+        </Typography>
+
+    );
+}
     return (
         <div >
             <div className="controlBtn">
@@ -154,6 +198,9 @@ const AssignUser = ({ socket }) => {
                     Assign user
                     <PersonAddIcon sx={{marginLeft:"10px"}}/>
                 </Button>
+
+
+
             </div>
 
             <Modal
