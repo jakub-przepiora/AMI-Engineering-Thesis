@@ -48,11 +48,11 @@ const RemoveColumnBtn = (props) => {
 
 
     };
-
+    if(!props.ownerStatus) {
         return (
-            <div >
+            <div>
                 <div className="controlBtn">
-                    <Button variant="contained" color="error"  >
+                    <Button variant="contained" color="error">
                         <DoDisturbIcon onClick={removeColumn}/>
                     </Button>
                 </div>
@@ -60,7 +60,7 @@ const RemoveColumnBtn = (props) => {
             </div>
 
         );
-
+    }
 
 };
 

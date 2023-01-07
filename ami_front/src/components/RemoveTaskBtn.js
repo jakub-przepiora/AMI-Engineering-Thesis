@@ -46,18 +46,20 @@ const RemoveTaskBtn = (props) => {
 
 
     };
-
-        return (
-            <div >
-                <div className="controlBtn">
-                    <Button variant="contained" color="error" onClick={removeTask} >
-                        Remove task
-                    </Button>
-                </div>
-
+if(!props.ownerStatus){
+    return (
+        <div >
+            <div className="controlBtn">
+                <Button variant="contained" color="error" onClick={removeTask} >
+                    Remove task
+                </Button>
             </div>
 
-        );
+        </div>
+
+    );
+}
+
 
 
 };

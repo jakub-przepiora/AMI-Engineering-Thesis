@@ -246,7 +246,7 @@ function App({ socket }, props) {
 								index={columnId}
 								className={"first"}
 							>
-								<h2>{column.name} <RemoveColumnBtn colid={column.id}/></h2>
+								<h2>{column.name} <RemoveColumnBtn colid={column.id} ownerStatus={props.ownerStatus} /></h2>
 								<div style={{ margin: 8 }}>
 									{/*<Droppable droppableId={columnId} key={columnId} className={"drops"}>*/}
 									<Droppable droppableId={columnId} key={columnId}  index={columnId} className={"drops"} >

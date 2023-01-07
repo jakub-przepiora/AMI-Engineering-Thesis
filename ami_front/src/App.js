@@ -10,6 +10,8 @@ import LoginForm from './pages/LoginForm';
 import RegisterForm from './pages/RegisterForm';
 import Table from './pages/Table';
 
+import Cookies from "js-cookie";
+
 // own import
 
 import {
@@ -48,7 +50,13 @@ function GetStart() {
     );
 }
 
+function Logout() {
 
+    Cookies.remove('current_token');
+    Cookies.remove('current_id');
+    window.location = '/';
+
+}
 
 
 
@@ -67,6 +75,7 @@ function App() {
                     <Route path='/my-tables' element={<MyTablesView/>} />
                     <Route path='/table' element={<Table/>} />
                     <Route path='/login' element={<LoginForm/>} />
+                    <Route path='/logout' element={<Logout/>} />
                     <Route path='/register' element={<RegisterForm/>} />
 
                 </Routes>

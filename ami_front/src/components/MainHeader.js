@@ -53,6 +53,10 @@ const pagesUserSettings = [
     {
         name: "Settings",
         url: "/settings"
+    },
+    {
+        name: "Logout",
+        url: "/logout"
     }
 ];
 const pages = ['About app', 'Get start'];
