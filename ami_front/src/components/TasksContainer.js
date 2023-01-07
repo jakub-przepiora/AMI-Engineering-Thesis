@@ -82,11 +82,10 @@ function App({ socket }, props) {
 			fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id'), requestOptions)
 				.then((res) => res.json())
 				.then((data) => {
-					console.log("dasdasd");
-					console.log(data);
+
 					if(data == '{}') {
 						setEmptyTable("Empty table");
-						alert("P");
+						alert("Empty table");
 					}
 					else {
 
@@ -294,7 +293,7 @@ function App({ socket }, props) {
 																			   onClick={toggleDrawer("right", false)}
 																			   onKeyDown={toggleDrawer("right", false)}
 																			>
-																				<RightTask taskid={item.id} title={item.title} content={item.content}/>
+																				<RightTask taskid={item.id} title={item.title} ownerStatus={props.ownerStatus} content={item.content}/>
 
 																			</p>
 

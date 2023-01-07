@@ -424,7 +424,8 @@ class ApiController extends AbstractController
         $new_task->setCreateData($date->setTimestamp(time()));
         $new_task->setTaskName($data['title']);
         $new_task->setTaskDesc($data['description']);
-        $new_task->setIdColumn($data['column_id']);
+//        $new_task->setIdColumn($data['column_id']);
+        $new_task->setIdColumn($this->getFirstColumnFromTable($id));
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($new_task);
@@ -437,6 +438,17 @@ class ApiController extends AbstractController
             'id'=> $new_task->getId()
         ]);
     }
+
+    public function getFirstColumnFromTable($id_tab) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $cols = $entityManager->getRepository(ColumnFromTable::class)->findBy(["id_table"=>$id_tab]);
+
+        if (!$cols) {
+            return false;
+        }
+        return $cols[0]->getId();
+    }
+
     /**
      * @Route("/api/table/{id}/task/remove", name="task_remove", methods={"POST"})
      */
@@ -728,8 +740,28 @@ class ApiController extends AbstractController
      *      Public METHODS
      *
      */
+    /**
+     * @Route("/api/table/{currentTabId}/owner/check", name="check_owner_table", methods={"POST"})
+     */
+    public function checkOwnerTableAPI(int $currentTabId,  UserRepository $repository,Request $request) : JsonResponse {
+        $data = json_decode($request->getContent(), true);
+        $tabs = $this->getDoctrine()
+            ->getRepository(TaskTables::class)
+            ->findBy(["id_owner"=>$data["user_id"]]);
+        if ($tabs) {
+            foreach ($tabs as $tab){
+                $idOwnTable = $tab->getId();
+                if($idOwnTable === $currentTabId){
+                    return $this->json(["status"=>true]);
+                }
+            }
+            return $this->json(["status"=>false]);
+        } else {
+            return $this->json(["status"=>false]);
+        }
+    }
 
-    public function checkOwnerTable($currentTabId, $user_id, $user_token, UserRepository $repository) {
+    public function checkOwnerTable(int $currentTabId, $user_id,  UserRepository $repository) {
         $tabs = $this->getDoctrine()
             ->getRepository(TaskTables::class)
             ->findBy(["id_owner"=>$user_id]);

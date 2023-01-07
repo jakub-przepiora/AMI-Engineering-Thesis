@@ -84,7 +84,7 @@ export default function TemporaryDrawer(props) {
                         <AssignUser taskid={clickedTask}/>
                         <Stopwatch taskid={clickedTask}/>
                         {list("right",)}
-                        <RemoveTaskBtn taskid={clickedTask}/>
+                        <RemoveTaskBtn taskid={clickedTask} ownerStatus={props.ownerStatus}/>
                     </Drawer>
                 </React.Fragment>
 

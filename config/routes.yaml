@@ -58,6 +58,14 @@ table_remove_user:
     path: /api/table/{id}/user/remove
     methods: [ POST ]
     controller: App\Controller\ApiController::removeUserToTab
+
+check_owner_table:
+    path: /api/table/{currentTabId}/owner/check
+    methods: [ POST ]
+    controller: App\Controller\ApiController::checkOwnerTableAPI
+
+
+
 #Tasks
 
 table_task_add:

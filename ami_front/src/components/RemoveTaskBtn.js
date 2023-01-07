@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 
 const RemoveTaskBtn = (props) => {
-   
+
 
 
 
@@ -46,17 +46,20 @@ const RemoveTaskBtn = (props) => {
 
 
     };
-    return (
-        <div >
-            <div className="controlBtn">
-                <Button variant="contained" color="error" onClick={removeTask} >
-                    Remove task
-                </Button>
+
+        return (
+            <div >
+                <div className="controlBtn">
+                    <Button variant="contained" color="error" onClick={removeTask} >
+                        Remove task
+                    </Button>
+                </div>
+
             </div>
 
-        </div>
+        );
 
-    );
+
 };
 
 export default RemoveTaskBtn;
