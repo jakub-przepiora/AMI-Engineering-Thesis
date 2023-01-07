@@ -80,6 +80,8 @@ class MyTablesView extends React.Component {
             })
         });
         const data = await response.json();
+        console.log(data);
+        if(!data.status)
         this.setState({ teamTables: data });
 
     }
