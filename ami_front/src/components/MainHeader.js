@@ -95,7 +95,11 @@ export default function MainHeader(){
         const checkPermission = async () => {
             const token = Cookies.get('current_token');
             const userId = Cookies.get('current_id');
-
+            if(!token) {
+                setMenuToRender(pagesBasic);
+                setMenuUserToRender(pagesSettings);
+                return;
+            }
             const response = await fetch('http://127.0.0.1:8000/api/checkjwt', {
                 method: 'POST',
                 headers: {
@@ -108,6 +112,7 @@ export default function MainHeader(){
             });
             const data = await response.json();
             setHasPermission(data.status);
+            console.log(data);
             if (!data.status ) {
                 setMenuToRender(pagesBasic);
                 setMenuUserToRender(pagesSettings);
