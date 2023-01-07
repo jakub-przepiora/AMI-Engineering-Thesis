@@ -100,7 +100,7 @@ class ApiController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
 
-        if(!$this->checkCredentials($data['owner'], $data['token'], $repository)) {
+        if(!$this->checkCredentials($data['user_id'], $data['token'], $repository)) {
 
             return $this->json(["status"=>"You don't have permission"]);
         }
@@ -108,8 +108,8 @@ class ApiController extends AbstractController
 
         $taskTables->setTabName($data['name']);
         $taskTables->setDescription($data['description']);
-        $taskTables->setIdOwner($data['owner']);
-        $taskTables->setTabMode($data['tabmode']);
+        $taskTables->setIdOwner($data['user_id']);
+        $taskTables->setTabMode("1");
 
         $entityManager->persist($taskTables);
         $entityManager->flush();

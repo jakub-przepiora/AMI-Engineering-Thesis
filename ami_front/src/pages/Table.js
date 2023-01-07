@@ -74,7 +74,7 @@ const Task = () => {
 
                 </Stack>
 
-                <TasksContainer   socket={ws} ownerStatus="true"/>
+                <TasksContainer   socket={ws}/>
             </Container>
         );
 

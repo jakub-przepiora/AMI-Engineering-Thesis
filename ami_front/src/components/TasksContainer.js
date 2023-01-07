@@ -106,9 +106,11 @@ function App({ socket }, props) {
 
 		wss.onmessage = (event) => { // recipient
 			const data = JSON.parse(event.data);
-
+			console.log("mam");
+			console.log(event.data);
 			const sCol = JSON.stringify(columns);
 			const sData = JSON.stringify(data);
+
 			if(sCol != sData){
 
 				setColumns(data);
@@ -142,8 +144,9 @@ function App({ socket }, props) {
 	useEffect(() => {
 
 		if(wss !== null){
-
-			wss.send(JSON.stringify(columns));
+			console.log("sebd");
+			console.log(wss);
+			console.log(wss.send(JSON.stringify(columns)));
 
 		}
 

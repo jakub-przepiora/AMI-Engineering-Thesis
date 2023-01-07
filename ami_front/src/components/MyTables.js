@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 import Err404 from "../pages/Error404";
 import TableIcon from "../components/TableIcon";
 import Link from "@mui/material/Link";
+import AddNewTable from "./AddNewTable";
 
 class MyTablesView extends React.Component {
 
@@ -80,7 +81,7 @@ class MyTablesView extends React.Component {
             })
         });
         const data = await response.json();
-        console.log(data);
+
         if(!data.status)
         this.setState({ teamTables: data });
 
@@ -113,19 +114,19 @@ class MyTablesView extends React.Component {
 
 
 
-                    <Grid item xs={3}>
-                        <Card sx={{maxWidth: 345}}>
-                            <div style={{ height: '185px'}}></div>
-                            <CardContent>
-                                <Typography gutterBottom variant="h4" component="div">
-                                    Add new table
-                                </Typography>
+                    {/*<Grid item xs={3}>*/}
+                    {/*    <Card sx={{maxWidth: 345}}>*/}
+                    {/*        <div style={{ height: '185px'}}></div>*/}
+                    {/*        <CardContent>*/}
+                    {/*            <Typography gutterBottom variant="h4" component="div">*/}
+                    {/*                Add new table*/}
+                    {/*            </Typography>*/}
 
-                            </CardContent>
+                    {/*        </CardContent>*/}
 
-                        </Card>
-                    </Grid>
-
+                    {/*    </Card>*/}
+                    {/*</Grid>*/}
+                    <AddNewTable/>
                 </Grid>
                 <h3>Teammates tables</h3>
                 <Grid container spacing={2}>
