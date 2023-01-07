@@ -5,6 +5,7 @@ import { DragDropContext, Draggable, Droppable, useDrop } from "react-beautiful-
 import Cookies from "js-cookie";
 import Err404 from "../pages/Error404";
 import RightTask from "../components/RightTask";
+import RemoveColumnBtn from "./RemoveColumnBtn";
 
 
 
@@ -245,7 +246,7 @@ function App({ socket }, props) {
 								index={columnId}
 								className={"first"}
 							>
-								<h2>{column.name}</h2>
+								<h2>{column.name} <RemoveColumnBtn colid={column.id}/></h2>
 								<div style={{ margin: 8 }}>
 									{/*<Droppable droppableId={columnId} key={columnId} className={"drops"}>*/}
 									<Droppable droppableId={columnId} key={columnId}  index={columnId} className={"drops"} >

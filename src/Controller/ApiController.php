@@ -566,7 +566,7 @@ class ApiController extends AbstractController
         }
 
         // check owner
-        if(!$this->checkOwnerTable($id, $data['user_id'], $data['token'], $repository)) {
+        if(!$this->checkOwnerTable($id, $data['user_id'])) {
 
             return $this->json(["status"=>"You aren't owner this table"]);
         }
@@ -761,7 +761,7 @@ class ApiController extends AbstractController
         }
     }
 
-    public function checkOwnerTable(int $currentTabId, $user_id,  UserRepository $repository) {
+    public function checkOwnerTable(int $currentTabId, $user_id) {
         $tabs = $this->getDoctrine()
             ->getRepository(TaskTables::class)
             ->findBy(["id_owner"=>$user_id]);
