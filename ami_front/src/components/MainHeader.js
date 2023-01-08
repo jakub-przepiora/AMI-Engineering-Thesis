@@ -179,9 +179,9 @@ export default function MainHeader(){
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page}  to={page}>
-                                    <Typography textAlign="center">{page}</Typography>
+                            {pages.map((page,index) => (
+                                <MenuItem key={index}  to={page}>
+                                    <Typography textAlign="center">{index}.{page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
