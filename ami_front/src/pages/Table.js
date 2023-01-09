@@ -4,7 +4,8 @@ import TasksContainer from "../components/TasksContainer";
 
 import AddColumn from "../components/AddColumn";
 import {Stack} from "@mui/material";
-
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
 import AddUser from "../components/AddUser";
 
@@ -14,7 +15,7 @@ import Err404 from "./Error404";
 
 
 const Task = () => {
-    const [hasPermission, setHasPermission] =useState('');
+    const [hasPermission, setHasPermission] =useState(null);
     const [hasOwner, setHasOwner] =useState('');
     const ws = new WebSocket('ws://localhost:3001');
 
@@ -22,7 +23,10 @@ const Task = () => {
         const checkPermission = async () => {
             const token = Cookies.get('current_token');
             const userId = Cookies.get('current_id');
-
+            if(!userId || !token) {
+                setHasPermission(false);
+                return;
+            }
             const response = await fetch('http://127.0.0.1:8000/api/checkjwt', {
                 method: 'POST',
                 headers: {
@@ -39,6 +43,10 @@ const Task = () => {
         const checkOwner = async () => {
             const token = Cookies.get('current_token');
             const userId = Cookies.get('current_id');
+            if(!userId || !token) {
+                setHasPermission(false);
+                return;
+            }
             const searchParams = new URLSearchParams(window.location.search);
             const response = await fetch('http://127.0.0.1:8000/api/table/'+searchParams.get('id')+'/owner/check', {
                 method: 'POST',
@@ -51,16 +59,38 @@ const Task = () => {
                 })
             });
             const data = await response.json();
-            console.log(data.status);
-            setHasOwner(data.status);
+            console.log(data);
+            setHasOwner(data);
         }
         checkPermission();
         checkOwner();
     }, []);
-    if (!hasPermission ) {
-        return (<Err404 />);
+    if (hasPermission == null ) {
+
+        return (
+            <Container maxWidth="xl">
+                <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight:'100%',
+                    height:'500px',
+
+                }}>
+                    <CircularProgress />
+                </Box>
+            </Container>
+        );
     }
-    if (hasOwner ) {
+    if (!hasPermission ) {
+
+        return (<div>
+            <Err404 />
+
+        </div>);
+    }
+
+    if (hasOwner && hasPermission) {
         return (
             <Container maxWidth="xl">
                 <Stack

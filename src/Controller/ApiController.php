@@ -762,7 +762,11 @@ class ApiController extends AbstractController
      * @Route("/api/table/{currentTabId}/owner/check", name="check_owner_table", methods={"POST"})
      */
     public function checkOwnerTableAPI(int $currentTabId,  UserRepository $repository,Request $request) : JsonResponse {
+
         $data = json_decode($request->getContent(), true);
+        if(!$data["user_id"]){
+            return $this->json(["status"=>false]);
+        }
         $tabs = $this->getDoctrine()
             ->getRepository(TaskTables::class)
             ->findBy(["id_owner"=>$data["user_id"]]);

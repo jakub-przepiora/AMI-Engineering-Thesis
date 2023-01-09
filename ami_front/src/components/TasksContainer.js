@@ -35,6 +35,10 @@ function App({ socket }, props) {
 		const updateTask = (data) => {
 			const token = Cookies.get('current_token');
 			const userId = Cookies.get('current_id');
+			if(!userId || !token) {
+
+				return;
+			}
 			var myHeaders = new Headers();
 			myHeaders.append("Content-Type", "application/json");
 			var raw = JSON.stringify({
@@ -66,6 +70,10 @@ function App({ socket }, props) {
 		const fetchTasks = () => {
 			const token = Cookies.get('current_token');
 			const userId = Cookies.get('current_id');
+			if(!userId || !token) {
+
+				return;
+			}
 			var myHeaders = new Headers();
 			myHeaders.append("Content-Type", "application/json");
 			var raw = JSON.stringify({

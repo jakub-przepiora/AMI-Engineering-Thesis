@@ -33,7 +33,10 @@ class MyTablesView extends React.Component {
     checkPermission = async () => {
         const token = Cookies.get('current_token');
         const userId = Cookies.get('current_id');
-
+        if(!userId || !token) {
+            this.setState({ hasPermission: false});
+            return;
+        }
         const response = await fetch('http://127.0.0.1:8000/api/checkjwt', {
             method: 'POST',
             headers: {
@@ -50,7 +53,10 @@ class MyTablesView extends React.Component {
     getOwnerTables = async () => {
         const token = Cookies.get('current_token');
         const userId = Cookies.get('current_id');
-
+        if(!userId || !token) {
+            this.setState({ hasPermission: false});
+            return;
+        }
         const response = await fetch('http://127.0.0.1:8000/api/tables', {
             method: 'POST',
             headers: {
@@ -69,7 +75,10 @@ class MyTablesView extends React.Component {
     getTeamTables = async () => {
         const token = Cookies.get('current_token');
         const userId = Cookies.get('current_id');
-
+        if(!userId || !token) {
+            this.setState({ hasPermission: false});
+            return;
+        }
         const response = await fetch('http://127.0.0.1:8000/api/teamtables', {
             method: 'POST',
             headers: {
