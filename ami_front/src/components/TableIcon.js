@@ -95,7 +95,7 @@ class TableIcon extends React.Component {
                     <CardActions>
                         <Button size="small" href={this.state.id}>Open</Button>
                         <Button size="small" onClick={()=>this.removeTable(this.state.tableid)}>Delete</Button>
-                        <Button size="small" href={this.state.raportUrl}>Raport</Button>
+                        <Button size="small" href={this.state.raportUrl}>Report</Button>
                     </CardActions>
                 </Card>
             </Grid>

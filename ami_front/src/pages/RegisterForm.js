@@ -10,9 +10,14 @@ export default function BasicTextFields() {
 
     const [emailNew, setEmailNew] = useState('');
     const [passwordNew, setPasswordNew] = useState('');
+    const [passwordRNew, setPasswordRNew] = useState('');
 
     const registerNew = (e) => {
         e.preventDefault();
+        if(passwordNew != passwordRNew) {
+            alert("Your passwords are different");
+            return;
+        }
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -53,15 +58,16 @@ export default function BasicTextFields() {
                    <TextField id="outlined-basic" label="E-mail" variant="outlined" fullWidth="true" onChange={(e) => setEmailNew(e.target.value)}/>
                </Box>
                <Box>
-                   <TextField id="outlined-basic" label="Password" variant="outlined" fullWidth="true" onChange={(e) => setPasswordNew(e.target.value)}/>
+                   <TextField id="outlined-basic" label="Password" variant="outlined" fullWidth="true" type="password" onChange={(e) => setPasswordNew(e.target.value)}/>
                </Box>
                 <Box>
-                    <TextField id="outlined-basic" label="Re-Password" variant="outlined" fullWidth="true" />
+                    <TextField id="outlined-basic" label="Re-Password" type="password" variant="outlined" onChange={(e) => setPasswordRNew(e.target.value)} fullWidth="true" />
                 </Box>
 
                 <Box className="button-center">
 
                     <Button variant="contained" type="submit" fullWidth="true">Register</Button>
+                    
                 </Box>
            </Box>
         </Container>

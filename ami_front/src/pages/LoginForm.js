@@ -116,7 +116,7 @@ export default function BasicTextFields() {
                        <TextField id="email" value={email} label="E-mail" variant="outlined" fullWidth="true" onChange={handleChangeEmail}/>
                    </Box>
                    <Box>
-                       <TextField id="password" value={password} label="Password" variant="outlined" fullWidth="true" onChange={handleChangePassword}/>
+                       <TextField id="password" value={password} label="Password" variant="outlined" type="password" fullWidth="true" onChange={handleChangePassword}/>
                    </Box>
                    <Box className="button-center">
                         <Button type="submit" variant="contained" fullWidth="true">Login</Button>
