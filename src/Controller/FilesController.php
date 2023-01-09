@@ -58,9 +58,7 @@ class FilesController extends AbstractController
      */
     public function addFile(int $id, UserRepository $repository, Request $request, FileUploader $fileUploader): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
-
+        
         if(!ApiController::checkCredentials($request->get('user_id'), $request->get('token'), $repository)) {
             return $this->json(["status" => "You don't have permission"]);
         }
