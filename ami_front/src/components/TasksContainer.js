@@ -114,8 +114,6 @@ function App({ socket }, props) {
 
 		wss.onmessage = (event) => { // recipient
 			const data = JSON.parse(event.data);
-			console.log("mam");
-			console.log(event.data);
 			const sCol = JSON.stringify(columns);
 			const sData = JSON.stringify(data);
 
