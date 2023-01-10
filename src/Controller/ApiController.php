@@ -302,7 +302,7 @@ class ApiController extends AbstractController
         }
 
 
-        return $this->json('Deleted a project successfully with id ' . $id);
+        return $this->json('Updated table with id: ' . $id);
     }
 
 
