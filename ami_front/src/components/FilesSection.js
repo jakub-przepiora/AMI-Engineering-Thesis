@@ -126,12 +126,14 @@ const FilesSection = ( props) => {
             <Grid container spacing={2} sx={{marginTop:"20px"}}>
                 {filesList.map((filet) => (
                     <Grid item xs={6} md={2}>
-                        <Link sx={{
+                        <Link color="inherit" sx={{
                             display:"flex",
                             flexDirection:"column",
-                            alignItems:"center"
+                            alignItems:"center",
+                            textDecoration: "none"
 
                         }}
+                        className="file-links"
                         href={filet.url}
                         >
                             <InsertDriveFileIcon sx={{ fontSize: 40 }}/>
