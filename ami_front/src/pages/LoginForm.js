@@ -30,6 +30,10 @@ function sendLoginRequest(email, password) {
     fetch("http://127.0.0.1:8000/api/login", requestOptions)
         .then(response => response.json())
         .then(data => {
+            if(data.error){
+                alert(data.error);
+                return;
+            }
             Cookies.set('current_id', data["user"], { expires: 1 });
             Cookies.set('current_token', data["token"], { expires: 1 });
             checkToken();

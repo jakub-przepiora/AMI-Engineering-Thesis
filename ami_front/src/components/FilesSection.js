@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import PublishIcon from '@mui/icons-material/Publish';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 
 
 
@@ -83,6 +84,9 @@ const FilesSection = ( props) => {
 
 
     };
+    const onFileClick = (url) => {
+        window.location = url;
+    }
     useEffect(() => {
         const getFilesTotask = () => {
             const token = Cookies.get('current_token');
@@ -122,17 +126,20 @@ const FilesSection = ( props) => {
             <Grid container spacing={2} sx={{marginTop:"20px"}}>
                 {filesList.map((filet) => (
                     <Grid item xs={6} md={2}>
-                        <Item sx={{
+                        <Link sx={{
                             display:"flex",
                             flexDirection:"column",
                             alignItems:"center"
-                        }}>
+
+                        }}
+                        href={filet.url}
+                        >
                             <InsertDriveFileIcon sx={{ fontSize: 40 }}/>
 
                             <Typography variant="subtitl2" gutterBottom>
                                 {filet.filename.substring(0, 17) + '...'}
                             </Typography>
-                        </Item>
+                        </Link>
 
                     </Grid>
                 ))}

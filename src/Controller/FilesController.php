@@ -43,6 +43,7 @@ class FilesController extends AbstractController
                 'id_user' => $filey->getUserId(),
                 'date' => $filey->getAddData(),
                 'filename' => $filey->getName(),
+                'url' => "http://localhost:8000/uploads/".$filey->getName(),
 
             ];
         }
@@ -86,7 +87,7 @@ class FilesController extends AbstractController
 
         return $this->json([
             "status"=>'Added file value added. '.$request->files->get('file'),
-
+            "url"=> $fileUploader->getUrl($fileNameNew)
         ]);
     }
 

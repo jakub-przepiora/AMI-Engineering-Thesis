@@ -44,7 +44,7 @@ class AssignUserController extends AbstractController
         $entityManager->flush();
 
         return $this->json([
-            "status"=>'Assigned',
+            "status"=>'Assigned user',
 
         ]);
 

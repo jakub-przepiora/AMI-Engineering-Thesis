@@ -105,7 +105,7 @@ const AssignUser = (props) => {
             .then(response => response.json())
             .then(data => {
 
-                alert(data.state);
+                alert(data.status);
                 handleClose();
             })
             .catch(error => console.log('error', error));
