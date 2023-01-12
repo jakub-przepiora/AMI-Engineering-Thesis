@@ -24,12 +24,6 @@ class RaportPDFController extends AbstractController
      */
     public function index(int $id, UserRepository $repository, Request $request)
     {
-//        $data = json_decode($request->getContent(), true);
-
-//        if(!ApiController::checkCredentials($data['user_id'], $data['token'], $repository)) {
-//
-//            return $this->json(["status"=>"You don't have permission"]);
-//        }
 
 
         $tasksFromTable = $this->getDoctrine()

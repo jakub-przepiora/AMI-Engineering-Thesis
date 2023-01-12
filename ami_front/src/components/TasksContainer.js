@@ -148,11 +148,51 @@ function App({ socket }, props) {
 
 
 	useEffect(() => {
+		const updateTask = (data) => {
+			const token = Cookies.get('current_token');
+			const userId = Cookies.get('current_id');
+			if(!userId || !token) {
 
+				return;
+			}
+			var myHeaders = new Headers();
+			myHeaders.append("Content-Type", "application/json");
+			var raw = JSON.stringify({
+				"user_id": userId,
+				"token": token,
+				"cols": data
+			});
+
+			var requestOptions = {
+				method: 'POST',
+				headers: myHeaders,
+				body: raw,
+				redirect: 'follow'
+			};
+			const searchParams = new URLSearchParams(window.location.search);
+			fetch("http://127.0.0.1:8000/api/table/"+searchParams.get('id')+"/update", requestOptions)
+				.then((res) => res.json())
+				.then((data) => {
+
+					var getTab = JSON.stringify(data).slice(1,-1);
+
+					var inToJson = JSON.parse(getTab.replaceAll("'",'"'));
+
+					setColumns(inToJson);
+
+				});
+		}
 		if(wss !== null){
 			console.log("sebd");
 			console.log(wss);
 			console.log(wss.send(JSON.stringify(columns)));
+
+
+
+
+
+			updateTask(columns);
+
 
 		}
 

@@ -63,7 +63,11 @@ const AddUser = ({ socket }) => {
 			.then(data => {
 				// const response = JSON.parse(data);
 				// console.log(data);
+				if(data.state)
 				alert(data.state);
+				else {
+					alert(data.status);
+				}
 			})
 			.catch(error => console.log('error', error));
 
