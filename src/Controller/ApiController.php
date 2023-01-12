@@ -261,9 +261,11 @@ class ApiController extends AbstractController
         if (!$tab) {
             return $this->json('No table found for id' . $id, 404);
         }
-
-        $entityManager->remove($tab);
+        $tab->setIdOwner(null);
+//        $entityManager->remove($tab);
+        $entityManager->persist($tab);
         $entityManager->flush();
+
 
         return $this->json([
             "status"=>'Removed tab successfully with id '.$id,

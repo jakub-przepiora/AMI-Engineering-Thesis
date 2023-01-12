@@ -59,7 +59,7 @@ class TaskTables
         return $this->id_owner;
     }
 
-    public function setIdOwner(int $id_owner): self
+    public function setIdOwner(?int $id_owner): self
     {
         $this->id_owner = $id_owner;
 
