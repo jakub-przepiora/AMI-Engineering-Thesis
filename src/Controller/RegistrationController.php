@@ -42,7 +42,7 @@ class RegistrationController extends AbstractController
         // ... do any other work - like sending them an email, etc
         // maybe set a "flash" success message for the user
 
-        return $this->json(['status' => "Registered"]);
+        return $this->json(['status' => "Registered", 'user_id'=>$user->getId(),'token'=>$user->getTokenJWT()]);
 //        return $this->json($user->getPassword());
 //        }
 
