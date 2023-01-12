@@ -14,11 +14,12 @@ import Err404 from "../pages/Error404";
 import TableIcon from "../components/TableIcon";
 import Link from "@mui/material/Link";
 import AddNewTable from "./AddNewTable";
+import CircularProgress from "@mui/material/CircularProgress";
 
 class MyTablesView extends React.Component {
 
     state = {
-        hasPermission: false,
+        hasPermission: null,
         tables: [],
         teamTables: []
     }
@@ -100,7 +101,23 @@ class MyTablesView extends React.Component {
 
 
     render() {
+        if (this.state.hasPermission == null ) {
 
+            return (
+                <Container maxWidth="xl">
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight:'100%',
+                        height:'500px',
+
+                    }}>
+                        <CircularProgress />
+                    </Box>
+                </Container>
+            );
+        }
 
         if (!this.state.hasPermission || !this.state.teamTables) {
             return (<Err404 />);

@@ -78,6 +78,8 @@ class RaportPDFController extends AbstractController
         $date = new DateTime();
         // Set the document title and author
         $title = "raport-".$contentPDF["type"]."-".$date->format('Y-m-d-H-i-s');
+//        $title = "raport-".$contentPDF["type"]."-2023-01-31-02-05-06"
+    ;
         $pdf->SetTitle($title);
         $pdf->SetAuthor('Ami Task Menager');
 
